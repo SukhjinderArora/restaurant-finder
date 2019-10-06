@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
-import SearchIcon from '../../assets/images/svg/search.svg';
-import LocationIcon from '../../assets/images/svg/location.svg';
+import { ReactComponent as SearchIconSVG } from '../../assets/images/svg/search.svg';
+import { ReactComponent as LocationIconSVG } from '../../assets/images/svg/location.svg';
 
 const propTypes = {
   setSideDrawerOpen: PropTypes.func.isRequired,
@@ -36,37 +36,62 @@ const NavList = styled.ul`
   display: flex;
 `;
 
-const NavItem = styled.li`
+const NavigationLink = styled(NavLink)`
   display: flex;
   align-items: center;
   margin-right: 3rem;
   cursor: pointer;
+  text-decoration: none;
 `;
 
-const NavItemText = styled.span`
+const SearchIcon = styled(SearchIconSVG)`
+  fill: rgba(0, 0, 0, 0.7);
+  width: 2.4rem;
+  height: 2.4rem;
+  ${NavigationLink}:hover & {
+    fill: #fc8019;
+  }
+`;
+
+const LocationIcon = styled(LocationIconSVG)`
+  fill: rgba(0, 0, 0, 0.7);
+  width: 2.4rem;
+  height: 2.4rem;
+  ${NavigationLink}:hover & {
+    fill: #fc8019;
+  }
+`;
+
+const NavText = styled.span`
   font-size: 1.6rem;
   margin-left: 0.5rem;
   color: rgba(0, 0, 0, 0.7);
-  ${NavItem}:hover & {
+  ${NavigationLink}:hover & {
     color: #fc8019;
   }
 `;
 
 const Navbar = ({ setSideDrawerOpen }) => {
+  const openSideDrawer = e => {
+    e.preventDefault();
+    setSideDrawerOpen(true);
+  };
   return (
     <Navigation>
       <Logo to="/">Restaurant Finder</Logo>
       <NavList>
-        <NavItem>
-          <img src={SearchIcon} alt="Search Icon" />
-          <NavItemText>Search</NavItemText>
-        </NavItem>
-        <NavItem>
-          <img src={LocationIcon} alt="Location Icon" />
-          <NavItemText onClick={() => setSideDrawerOpen(true)}>
-            Your Location
-          </NavItemText>
-        </NavItem>
+        <li>
+          <NavigationLink to="/search">
+            <SearchIcon />
+            <NavText>Search</NavText>
+          </NavigationLink>
+        </li>
+        <li>
+          <NavigationLink to="/" onClick={openSideDrawer}>
+            <LocationIcon />
+            <NavText>Your Location</NavText>
+          </NavigationLink>
+        </li>
       </NavList>
     </Navigation>
   );
