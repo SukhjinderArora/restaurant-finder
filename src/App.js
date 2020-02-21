@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import Layout from './components/Layout';
 import Home from './components/Home';
-import Search from './components/Navigation/Search';
+import Search from './components/Search';
 import PageNotFound from './components/PageNotFound';
 
 const App = () => {

@@ -7,6 +7,7 @@ import Backdrop from '../UI/Backdrop';
 const propTypes = {
   showSideDrawer: Proptypes.bool.isRequired,
   setSideDrawerOpen: Proptypes.func.isRequired,
+  children: Proptypes.element.isRequired,
 };
 
 const StyledSideDrawer = styled.div`
@@ -23,14 +24,16 @@ const StyledSideDrawer = styled.div`
   transform: translateX(${props => (props.showSideDrawer ? '0' : '100%')});
 `;
 
-const SideDrawer = ({ showSideDrawer, setSideDrawerOpen }) => {
+const SideDrawer = ({ showSideDrawer, setSideDrawerOpen, children }) => {
   return (
     <>
       <Backdrop
         showBackdrop={showSideDrawer}
         setBackdropVisible={setSideDrawerOpen}
       />
-      <StyledSideDrawer showSideDrawer={showSideDrawer} />
+      <StyledSideDrawer showSideDrawer={showSideDrawer}>
+        {children}
+      </StyledSideDrawer>
     </>
   );
 };

@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { ReactComponent as SearchIconSVG } from '../../assets/images/svg/search.svg';
+import { ReactComponent as SearchIconSVG } from '../../assets/images/svg/search-icon.svg';
+
+const propTypes = {
+  input: PropTypes.string.isRequired,
+  onInputChangeHandler: PropTypes.func.isRequired,
+  onFormSubmitHandler: PropTypes.func.isRequired,
+  clearInput: PropTypes.func.isRequired,
+};
 
 const Form = styled.form`
   width: 60rem;
   margin: 0 auto;
-  margin-top: 10rem;
   position: relative;
 `;
 
@@ -32,7 +39,7 @@ const SearchButton = styled.button`
   top: 50%;
   right: 0;
   transform: translateY(-50%);
-  padding: 0 5px;
+  padding: 0 1rem;
   cursor: pointer;
 `;
 
@@ -42,25 +49,48 @@ const SearchIcon = styled(SearchIconSVG)`
   height: 2.4rem;
 `;
 
-const SearchForm = () => {
-  const [input, setInput] = useState('');
-  const onSubmitSearchHandler = () => {};
-  const onInputChangeHandler = e => {
-    setInput(e.target.value);
-  };
+const InputClearButton = styled.button`
+  font-family: inherit;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #5f5e5e;
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  right: 5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  &:hover {
+    color: #fc8019;
+  }
+  &:focus {
+    outline: none;
+  }
+`;
+
+const SearchForm = ({
+  input,
+  onInputChangeHandler,
+  onFormSubmitHandler,
+  clearInput,
+}) => {
   return (
-    <Form onSubmit={onSubmitSearchHandler}>
+    <Form onSubmit={onFormSubmitHandler}>
       <Input
         type="text"
-        placeholder="Search for a Restaurant or a dish"
+        placeholder="Search for a Restaurant"
         value={input}
         onChange={onInputChangeHandler}
       />
+      {input && <InputClearButton onClick={clearInput}>clear</InputClearButton>}
       <SearchButton type="submit">
         <SearchIcon />
       </SearchButton>
     </Form>
   );
 };
+
+SearchForm.propTypes = propTypes;
 
 export default SearchForm;

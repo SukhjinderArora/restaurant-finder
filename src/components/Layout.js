@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Navbar from './Navigation/Navbar';
+import Footer from './Navigation/Footer';
 import SideDrawer from './Navigation/SideDrawer';
 
 const propTypes = {
@@ -22,6 +23,7 @@ const Layout = ({ children }) => {
         setSideDrawerOpen={sideDrawerHandler}
       />
       {children}
+      <Footer />
     </>
   );
 };

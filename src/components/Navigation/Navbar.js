@@ -1,13 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
-import { ReactComponent as SearchIconSVG } from '../../assets/images/svg/search.svg';
-import { ReactComponent as LocationIconSVG } from '../../assets/images/svg/location.svg';
+import { ReactComponent as SearchIconSVG } from '../../assets/images/svg/search-icon.svg';
+import { ReactComponent as LocationIconSVG } from '../../assets/images/svg/location-icon.svg';
 
 const propTypes = {
-  setSideDrawerOpen: PropTypes.func.isRequired,
+  userLocation: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    country_id: PropTypes.number,
+    country_name: PropTypes.string,
+    country_flag_url: PropTypes.string,
+  }).isRequired,
 };
 
 const Navigation = styled.nav`
@@ -24,7 +31,7 @@ const Navigation = styled.nav`
 const Logo = styled(NavLink)`
   text-decoration: none;
   font-size: 2.2rem;
-  font-weight: 400;
+  font-weight: 700;
   color: #3e3d3d;
   :hover {
     color: #fc8019;
@@ -34,48 +41,57 @@ const Logo = styled(NavLink)`
 const NavList = styled.ul`
   list-style: none;
   display: flex;
+  align-items: center;
 `;
 
 const NavigationLink = styled(NavLink)`
   display: flex;
   align-items: center;
+  color: rgba(0, 0, 0, 0.7);
   margin-right: 3rem;
   cursor: pointer;
   text-decoration: none;
+  &.active {
+    color: #fc8019;
+  }
 `;
 
 const SearchIcon = styled(SearchIconSVG)`
-  fill: rgba(0, 0, 0, 0.7);
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 2rem;
+  padding: 0.5rem;
+  box-sizing: content-box;
   ${NavigationLink}:hover & {
+    fill: #fc8019;
+  }
+  ${NavigationLink}.active & {
     fill: #fc8019;
   }
 `;
 
 const LocationIcon = styled(LocationIconSVG)`
-  fill: rgba(0, 0, 0, 0.7);
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 3rem;
   ${NavigationLink}:hover & {
+    fill: #fc8019;
+  }
+  ${NavigationLink}.active & {
     fill: #fc8019;
   }
 `;
 
-const NavText = styled.span`
+const LinkText = styled.span`
   font-size: 1.6rem;
-  margin-left: 0.5rem;
-  color: rgba(0, 0, 0, 0.7);
+  color: inherit;
   ${NavigationLink}:hover & {
     color: #fc8019;
   }
 `;
 
-const Navbar = ({ setSideDrawerOpen }) => {
-  const openSideDrawer = e => {
-    e.preventDefault();
-    setSideDrawerOpen(true);
-  };
+const LocationFlag = styled.img`
+  width: 2rem;
+  margin-left: 1rem;
+`;
+
+const Navbar = ({ userLocation }) => {
   return (
     <Navigation>
       <Logo to="/">Restaurant Finder</Logo>
@@ -83,13 +99,20 @@ const Navbar = ({ setSideDrawerOpen }) => {
         <li>
           <NavigationLink to="/search">
             <SearchIcon />
-            <NavText>Search</NavText>
+            <LinkText>Search</LinkText>
           </NavigationLink>
         </li>
         <li>
-          <NavigationLink to="/" onClick={openSideDrawer}>
+          <NavigationLink to="/location" exact>
             <LocationIcon />
-            <NavText>Your Location</NavText>
+            <LinkText>
+              {userLocation.id
+                ? `${userLocation.name}, ${userLocation.country_name}`
+                : 'Your Location'}
+            </LinkText>
+            {userLocation.id && (
+              <LocationFlag src={userLocation.country_flag_url} alt="Flag" />
+            )}
           </NavigationLink>
         </li>
       </NavList>
@@ -97,6 +120,12 @@ const Navbar = ({ setSideDrawerOpen }) => {
   );
 };
 
+const mapStateToProps = state => {
+  return {
+    userLocation: state.location.userLocation,
+  };
+};
+
 Navbar.propTypes = propTypes;
 
-export default Navbar;
+export default connect(mapStateToProps)(Navbar);
