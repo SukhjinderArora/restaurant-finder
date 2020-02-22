@@ -11,8 +11,8 @@ const StyledFooter = styled.footer`
   left: 0;
   right: 0;
   padding: 1rem 5rem;
-  background: rgba(228, 228, 228, 0.15);
-  border-top: 1px solid rgba(212, 212, 212, 0.4);
+  background: rgba(162, 162, 162, 0.15);
+  border-top: 1px solid rgba(142, 142, 142, 0.4);
 `;
 
 const CopyRightText = styled.p`

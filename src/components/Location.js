@@ -18,6 +18,9 @@ const propTypes = {
   getListOfCities: PropTypes.func.isRequired,
   clearListOfCities: PropTypes.func.isRequired,
   getUserLocation: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 const HeroImage = styled.div`
@@ -36,6 +39,7 @@ const Location = ({
   getListOfCities,
   clearListOfCities,
   getUserLocation,
+  history,
 }) => {
   const [inputText, setInputText] = useState('');
   const [inputError, setInputError] = useState(false);
@@ -75,6 +79,7 @@ const Location = ({
     setInputText(name);
     setAutoCompleteVisibility(false);
     getUserLocation(id);
+    history.push('/restaurants');
   }
 
   return (
