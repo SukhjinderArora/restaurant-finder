@@ -25,7 +25,7 @@ const propTypes = {
 
 const HeroImage = styled.div`
   background-image: url(${backgroundImage});
-  height: 50rem;
+  height: 75vh;
   width: 100%;
   position: relative;
   background-position: 0;
@@ -82,6 +82,15 @@ const Location = ({
     history.push('/restaurants');
   }
 
+  function listItemKeyPressHandler(id, name, e) {
+    if (e.keyCode === 13) {
+      setInputText(name);
+      setAutoCompleteVisibility(false);
+      getUserLocation(id);
+      history.push('/restaurants');
+    }
+  }
+
   return (
     <HeroImage>
       <FormContainer>
@@ -96,6 +105,7 @@ const Location = ({
             list={cities}
             type="cities"
             onListItemClick={listItemClickHandler}
+            onListItemKeyDown={listItemKeyPressHandler}
           />
         ) : null}
         {inputError ? (

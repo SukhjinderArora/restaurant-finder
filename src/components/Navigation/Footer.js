@@ -11,7 +11,7 @@ const StyledFooter = styled.footer`
   left: 0;
   right: 0;
   padding: 1rem 5rem;
-  background: rgba(162, 162, 162, 0.15);
+  background: rgb(247, 247, 247);
   border-top: 1px solid rgba(142, 142, 142, 0.4);
 `;
 

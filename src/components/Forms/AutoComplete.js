@@ -6,6 +6,7 @@ const propTypes = {
   list: PropTypes.arrayOf(PropTypes.object).isRequired,
   type: PropTypes.string.isRequired,
   onListItemClick: PropTypes.func.isRequired,
+  onListItemKeyDown: PropTypes.func.isRequired,
 };
 
 const List = styled.ul`
@@ -41,7 +42,8 @@ const ListItem = styled.li`
   border-bottom: 1px dotted;
   border-color: rgba(0, 0, 0, 0.4);
   cursor: pointer;
-  &:hover {
+  &:hover,
+  &:focus {
     color: #fc8019;
   }
 `;
@@ -53,15 +55,21 @@ const ListItemText = styled.p`
 const ListItemSubText = styled.p`
   font-size: 1.4rem;
   color: #2f2f2f;
+  ${ListItem}:hover & {
+    color: #fc8019;
+  }
 `;
 
-const AutoComplete = ({ list, type, onListItemClick }) => {
+const AutoComplete = ({ list, type, onListItemClick, onListItemKeyDown }) => {
   let listItems;
   if (type === 'cities') {
     listItems = list.map(listItem => (
       <ListItem
+        role="option"
+        tabIndex="0"
         key={listItem.id}
         onClick={() => onListItemClick(listItem.id, listItem.name)}
+        onKeyDown={e => onListItemKeyDown(listItem.id, listItem.name, e)}
       >
         {listItem.name}
       </ListItem>
@@ -79,7 +87,11 @@ const AutoComplete = ({ list, type, onListItemClick }) => {
       </ListItem>
     ));
   }
-  return <List>{listItems}</List>;
+  return (
+    <List role="listbox" tabIndex="0">
+      {listItems}
+    </List>
+  );
 };
 
 AutoComplete.propTypes = propTypes;

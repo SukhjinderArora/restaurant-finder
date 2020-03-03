@@ -15,6 +15,7 @@ const propTypes = {
     country_name: PropTypes.string,
     country_flag_url: PropTypes.string,
   }).isRequired,
+  userLocated: PropTypes.bool.isRequired,
 };
 
 const Navigation = styled.nav`
@@ -91,7 +92,7 @@ const LocationFlag = styled.img`
   margin-left: 1rem;
 `;
 
-const Navbar = ({ userLocation }) => {
+const Navbar = ({ userLocation, userLocated }) => {
   return (
     <Navigation>
       <Logo to="/">Restaurant Finder</Logo>
@@ -106,11 +107,11 @@ const Navbar = ({ userLocation }) => {
           <NavigationLink to="/location" exact>
             <LocationIcon />
             <LinkText>
-              {userLocation.id
+              {userLocated
                 ? `${userLocation.name}, ${userLocation.country_name}`
                 : 'Your Location'}
             </LinkText>
-            {userLocation.id && (
+            {userLocated && (
               <LocationFlag src={userLocation.country_flag_url} alt="Flag" />
             )}
           </NavigationLink>
@@ -123,6 +124,7 @@ const Navbar = ({ userLocation }) => {
 const mapStateToProps = state => {
   return {
     userLocation: state.location.userLocation,
+    userLocated: !!state.location.userLocation.id,
   };
 };
 

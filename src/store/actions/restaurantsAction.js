@@ -1,0 +1,42 @@
+import axios from 'axios';
+
+import { API_KEY, baseUrl } from '../../config';
+import {
+  GET_RESTAURANTS_START,
+  GET_RESTAURANTS_SUCCESS,
+  GET_RESTAURANTS_ERROR,
+  CLEAR_RESTAURANTS,
+} from './actionTypes';
+
+export const getRestaurants = (cityID, cuisines, sortBy) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({ type: GET_RESTAURANTS_START });
+      const response = await axios.get(`${baseUrl}/search`, {
+        params: {
+          entity_id: cityID,
+          entity_type: 'city',
+          cuisines: cuisines.join(','),
+          sort: sortBy,
+          start: getState().restaurants.offset,
+        },
+        headers: {
+          'user-key': API_KEY,
+        },
+      });
+      dispatch({
+        type: GET_RESTAURANTS_SUCCESS,
+        result: {
+          restaurants: response.data.restaurants,
+          offset: response.data.results_start,
+        },
+      });
+    } catch (e) {
+      dispatch({ type: GET_RESTAURANTS_ERROR });
+    }
+  };
+};
+
+export const clearRestaurants = () => {
+  return { type: CLEAR_RESTAURANTS };
+};
