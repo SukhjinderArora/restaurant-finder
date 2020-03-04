@@ -8,8 +8,10 @@ import {
 const initialState = {
   restaurants: [],
   offset: 0,
+  totalResults: 0,
   loading: false,
   error: false,
+  hasMore: false,
 };
 
 const restaurantReducer = (state = initialState, action) => {
@@ -24,6 +26,7 @@ const restaurantReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: true,
+        hasMore: false,
       };
     case GET_RESTAURANTS_SUCCESS:
       return {
@@ -31,13 +34,20 @@ const restaurantReducer = (state = initialState, action) => {
         loading: false,
         error: false,
         restaurants: [...state.restaurants, ...action.result.restaurants],
-        offset: state.offset + 20,
+        offset:
+          state.offset > action.result.offset
+            ? state.offset
+            : action.result.offset,
+        totalResults: action.result.totalResults,
+        hasMore: action.result.hasMore,
       };
     case CLEAR_RESTAURANTS:
       return {
         ...state,
         restaurants: [],
         offset: 0,
+        totalResults: 0,
+        hasMore: false,
       };
     default:
       return state;

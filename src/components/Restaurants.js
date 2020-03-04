@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
+import debounce from 'lodash.debounce';
 
 import Grid from './UI/Grid';
 import Card from './UI/Card';
@@ -26,10 +27,12 @@ const propTypes = {
   categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   cuisines: PropTypes.arrayOf(PropTypes.object).isRequired,
   restaurants: PropTypes.arrayOf(PropTypes.object).isRequired,
+  hasMore: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 const Wrapper = styled.div`
-  /* display: flex; */
+  padding-bottom: 17rem;
 `;
 
 const Restaurants = ({
@@ -46,7 +49,27 @@ const Restaurants = ({
   categories,
   cuisines,
   restaurants,
+  hasMore,
+  loading,
 }) => {
+  const handleScroll = () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      if (hasMore) getRestaurants(cityID, [], '');
+    }
+  };
+
+  const handleScrollDebounced = useCallback(debounce(handleScroll, 300), [
+    hasMore,
+    cityID,
+  ]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScrollDebounced);
+    return () => {
+      window.removeEventListener('scroll', handleScrollDebounced, false);
+    };
+  });
+
   useEffect(() => {
     if (userLocated) {
       getCategories(cityID);
@@ -71,9 +94,9 @@ const Restaurants = ({
     <Card
       name={restaurant.restaurant.name}
       key={restaurant.restaurant.id}
-      imageUrl={restaurant.restaurant.featured_image}
+      imageUrl={restaurant.restaurant.thumb}
       cuisines={restaurant.restaurant.cuisines}
-      rating={restaurant.restaurant.user_rating.aggregate_rating}
+      rating={Number(restaurant.restaurant.user_rating.aggregate_rating)}
       cost={`${restaurant.restaurant.currency}${restaurant.restaurant.average_cost_for_two}`}
       location={`${restaurant.restaurant.location.locality}, ${restaurant.restaurant.location.city}`}
     />
@@ -81,7 +104,9 @@ const Restaurants = ({
   return (
     <Wrapper>
       <Header>{`Restaurants in ${city}, ${country}`}</Header>
-      {restaurants.length > 0 ? <Grid>{restaurantList}</Grid> : <Spinner />}
+      {restaurants.length === 0 && <Spinner />}
+      <Grid>{restaurantList}</Grid>
+      {hasMore && loading && <Spinner />}
     </Wrapper>
   );
 };
@@ -97,6 +122,8 @@ const mapStateToProps = state => {
     categories: state.filter.categories,
     cuisines: state.filter.cuisines,
     restaurants: state.restaurants.restaurants,
+    hasMore: state.restaurants.hasMore,
+    loading: state.restaurants.loading,
   };
 };
 

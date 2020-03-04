@@ -19,6 +19,11 @@ const propTypes = {
 };
 
 const Navigation = styled.nav`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
   display: flex;
   height: 7rem;
   background-color: #fff;

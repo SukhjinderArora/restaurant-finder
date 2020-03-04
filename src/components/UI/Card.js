@@ -9,7 +9,7 @@ const propTypes = {
   imageUrl: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   cuisines: PropTypes.string.isRequired,
-  rating: PropTypes.string.isRequired,
+  rating: PropTypes.number.isRequired,
   cost: PropTypes.string.isRequired,
 };
 
