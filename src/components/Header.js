@@ -1,21 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-
-const propTypes = {
-  children: PropTypes.string.isRequired,
-};
+import { NavLink, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 
 const StyledHeader = styled.header`
   display: flex;
   justify-content: space-between;
+  height: 7rem;
   width: 100%;
   align-items: center;
   border-bottom: 1px solid #e8e8e8;
   max-width: 1200px;
   margin: 0 auto;
-  margin-top: 2rem;
-  padding-top: 1rem;
 `;
 
 const Heading = styled.h1`
@@ -33,19 +30,44 @@ const ListItem = styled.li`
   margin-right: 1rem;
 `;
 
-const Header = ({ children }) => {
+const Link = styled(NavLink)`
+  color: #000;
+  text-decoration: none;
+  &.selected,
+  &:hover {
+    color: #fc8019;
+  }
+`;
+
+const Header = () => {
+  const location = useSelector(state => state.location.userLocation);
+  const { sortBy } = queryString.parse(useLocation().search);
   return (
     <StyledHeader>
-      <Heading>{children}</Heading>
+      <Heading>
+        {`Restaurants in ${location.name}, ${location.country_name}`}
+      </Heading>
       <NavList>
-        <ListItem>Cost</ListItem>
-        <ListItem>Rating</ListItem>
+        <ListItem>
+          <Link
+            to="/restaurants?sortBy=cost&orderBy=asc"
+            activeClassName={sortBy === 'cost' ? 'selected' : ''}
+          >
+            Cost
+          </Link>
+        </ListItem>
+        <ListItem>
+          <Link
+            to="/restaurants?sortBy=rating&orderBy=desc"
+            activeClassName={sortBy === 'rating' ? 'selected' : ''}
+          >
+            Rating
+          </Link>
+        </ListItem>
         <ListItem>Filters</ListItem>
       </NavList>
     </StyledHeader>
   );
 };
-
-Header.propTypes = propTypes;
 
 export default Header;

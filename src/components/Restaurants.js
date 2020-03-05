@@ -1,14 +1,15 @@
 import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import debounce from 'lodash.debounce';
+import queryString from 'query-string';
 
 import Grid from './UI/Grid';
-import Card from './UI/Card';
 import Spinner from './UI/Spinner';
 import Header from './Header';
+import RestaurantList from './RestaurantList';
 
 import * as filtersAction from '../store/actions/filtersAction';
 import * as restaurantsAction from '../store/actions/restaurantsAction';
@@ -22,8 +23,6 @@ const propTypes = {
   getRestaurants: PropTypes.func.isRequired,
   clearRestaurants: PropTypes.func.isRequired,
   cityID: PropTypes.number.isRequired,
-  city: PropTypes.string.isRequired,
-  country: PropTypes.string.isRequired,
   categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   cuisines: PropTypes.arrayOf(PropTypes.object).isRequired,
   restaurants: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -44,23 +43,23 @@ const Restaurants = ({
   getRestaurants,
   clearRestaurants,
   cityID,
-  city,
-  country,
   categories,
   cuisines,
   restaurants,
   hasMore,
   loading,
 }) => {
+  const location = useLocation();
+  const { sortBy, orderBy } = queryString.parse(location.search);
   const handleScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      if (hasMore) getRestaurants(cityID, [], '');
+      if (hasMore) getRestaurants(cityID, [], sortBy);
     }
   };
-
   const handleScrollDebounced = useCallback(debounce(handleScroll, 300), [
     hasMore,
     cityID,
+    sortBy,
   ]);
 
   useEffect(() => {
@@ -79,33 +78,24 @@ const Restaurants = ({
 
   useEffect(() => {
     clearRestaurants();
-  }, [clearRestaurants, cityID]);
+  }, [clearRestaurants, cityID, sortBy, orderBy]);
 
   useEffect(() => {
     if (userLocated) {
-      getRestaurants(cityID, [], '');
+      getRestaurants(cityID, [], sortBy, orderBy);
     }
-  }, [getRestaurants, cityID, userLocated]);
+  }, [getRestaurants, cityID, userLocated, sortBy, orderBy]);
 
   if (locationLoading) return <Spinner />;
   if (locationError) return <div>Error getting location</div>;
   if (!userLocated) return <Redirect to="/location" />;
-  const restaurantList = restaurants.map(restaurant => (
-    <Card
-      name={restaurant.restaurant.name}
-      key={restaurant.restaurant.id}
-      imageUrl={restaurant.restaurant.thumb}
-      cuisines={restaurant.restaurant.cuisines}
-      rating={Number(restaurant.restaurant.user_rating.aggregate_rating)}
-      cost={`${restaurant.restaurant.currency}${restaurant.restaurant.average_cost_for_two}`}
-      location={`${restaurant.restaurant.location.locality}, ${restaurant.restaurant.location.city}`}
-    />
-  ));
   return (
     <Wrapper>
-      <Header>{`Restaurants in ${city}, ${country}`}</Header>
+      <Header />
       {restaurants.length === 0 && <Spinner />}
-      <Grid>{restaurantList}</Grid>
+      <Grid>
+        <RestaurantList restaurants={restaurants} />
+      </Grid>
       {hasMore && loading && <Spinner />}
     </Wrapper>
   );
@@ -117,8 +107,6 @@ const mapStateToProps = state => {
     locationError: state.location.locationError,
     userLocated: !!state.location.userLocation.id,
     cityID: state.location.userLocation.id || 0,
-    city: state.location.userLocation.name || '',
-    country: state.location.userLocation.country_name || '',
     categories: state.filter.categories,
     cuisines: state.filter.cuisines,
     restaurants: state.restaurants.restaurants,
@@ -132,8 +120,10 @@ const mapDispatchToProps = dispatch => {
     getCategories: cityID =>
       dispatch(filtersAction.getRestaurantCategories(cityID)),
     getCuisines: cityID => dispatch(filtersAction.getCusines(cityID)),
-    getRestaurants: (cityID, cuisines = [], sortBy = '') =>
-      dispatch(restaurantsAction.getRestaurants(cityID, cuisines, sortBy)),
+    getRestaurants: (cityID, cuisines = [], sortBy = '', orderBy = '') =>
+      dispatch(
+        restaurantsAction.getRestaurants(cityID, cuisines, sortBy, orderBy)
+      ),
     clearRestaurants: () => dispatch(restaurantsAction.clearRestaurants()),
   };
 };

@@ -8,7 +8,7 @@ import {
   CLEAR_RESTAURANTS,
 } from './actionTypes';
 
-export const getRestaurants = (cityID, cuisines, sortBy) => {
+export const getRestaurants = (cityID, cuisines, sortBy, orderBy) => {
   return async (dispatch, getState) => {
     try {
       if (getState().restaurants.loading) return;
@@ -19,6 +19,7 @@ export const getRestaurants = (cityID, cuisines, sortBy) => {
           entity_type: 'city',
           cuisines: cuisines.join(','),
           sort: sortBy,
+          order: orderBy,
           start: getState().restaurants.offset,
         },
         headers: {
