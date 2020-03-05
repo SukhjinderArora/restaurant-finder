@@ -53,7 +53,7 @@ const Restaurants = ({
   const { sortBy, orderBy } = queryString.parse(location.search);
   const handleScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      if (hasMore) getRestaurants(cityID, [], sortBy);
+      if (hasMore) getRestaurants(cityID, [], sortBy, orderBy);
     }
   };
   const handleScrollDebounced = useCallback(debounce(handleScroll, 300), [
