@@ -23,7 +23,7 @@ const Navigation = styled.nav`
   top: 0;
   left: 0;
   right: 0;
-  z-index: 500;
+  z-index: 200;
   display: flex;
   height: 7rem;
   background-color: #fff;

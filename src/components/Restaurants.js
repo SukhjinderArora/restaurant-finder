@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect, useLocation } from 'react-router-dom';
@@ -9,6 +9,8 @@ import queryString from 'query-string';
 import Grid from './UI/Grid';
 import Spinner from './UI/Spinner';
 import Header from './Header';
+import SideDrawer from './Navigation/SideDrawer';
+import Filter from './Filter';
 import RestaurantList from './RestaurantList';
 
 import * as filtersAction from '../store/actions/filtersAction';
@@ -86,17 +88,28 @@ const Restaurants = ({
     }
   }, [getRestaurants, cityID, userLocated, sortBy, orderBy]);
 
+  const [sideDrawerOpen, setSideDrawer] = useState(false);
+  const sideDrawerHandler = open => {
+    setSideDrawer(open);
+  };
+
   if (locationLoading) return <Spinner />;
   if (locationError) return <div>Error getting location</div>;
   if (!userLocated) return <Redirect to="/location" />;
   return (
     <Wrapper>
-      <Header />
+      <Header setSideDrawerOpen={sideDrawerHandler} />
       {restaurants.length === 0 && <Spinner />}
       <Grid>
         <RestaurantList restaurants={restaurants} />
       </Grid>
       {hasMore && loading && <Spinner />}
+      <SideDrawer
+        showSideDrawer={sideDrawerOpen}
+        setSideDrawerOpen={sideDrawerHandler}
+      >
+        <Filter />
+      </SideDrawer>
     </Wrapper>
   );
 };

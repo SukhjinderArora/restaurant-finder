@@ -26,6 +26,7 @@ export const getRestaurants = (cityID, cuisines, sortBy, orderBy) => {
           'user-key': API_KEY,
         },
       });
+      console.log(response);
       dispatch({
         type: GET_RESTAURANTS_SUCCESS,
         result: {

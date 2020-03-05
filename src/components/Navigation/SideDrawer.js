@@ -17,7 +17,7 @@ const StyledSideDrawer = styled.div`
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 200;
+  z-index: 500;
   box-shadow: 0px 0 10px 3px rgba(0, 0, 0, 0.2);
   background-color: #fff;
   transition: transform ease-in 0.3s;
