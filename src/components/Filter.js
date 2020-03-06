@@ -32,7 +32,8 @@ const CloseButton = styled.button`
 `;
 
 const CloseIcon = styled(CloseIconSVG)`
-  width: 5rem;
+  width: 3rem;
+  height: 3rem;
   cursor: pointer;
   &:hover polygon {
     fill: #fc8019;
@@ -40,9 +41,10 @@ const CloseIcon = styled(CloseIconSVG)`
 `;
 
 const HeaderText = styled.h1`
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 400;
   margin-left: 1rem;
+  color: rgba(0, 0, 0, 0.9);
 `;
 
 const FilterContainer = styled.div`
@@ -50,8 +52,9 @@ const FilterContainer = styled.div`
 `;
 
 const FilterType = styled.h2`
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   font-weight: 400;
+  color: rgba(0, 0, 0, 0.85);
 `;
 
 const FilterList = styled.ul`
