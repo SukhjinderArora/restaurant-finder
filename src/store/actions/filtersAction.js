@@ -8,6 +8,7 @@ import {
   GET_CUISINES_START,
   GET_CUISINES,
   GET_CUISINES_FAIL,
+  SET_CUISINES,
 } from './actionTypes';
 
 export const getRestaurantCategories = cityID => {
@@ -50,3 +51,10 @@ export const getCusines = cityID => {
     }
   };
 };
+
+export const setCuisines = cuisines => {
+  return {
+    type: SET_CUISINES,
+    selectedCuisines: cuisines,
+  };
+}

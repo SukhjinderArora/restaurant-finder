@@ -20,13 +20,12 @@ const propTypes = {
   userLocated: PropTypes.bool.isRequired,
   locationLoading: PropTypes.bool.isRequired,
   locationError: PropTypes.bool.isRequired,
-  getCategories: PropTypes.func.isRequired,
   getCuisines: PropTypes.func.isRequired,
   getRestaurants: PropTypes.func.isRequired,
   clearRestaurants: PropTypes.func.isRequired,
   cityID: PropTypes.number.isRequired,
-  categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   cuisines: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selectedCuisines: PropTypes.string.isRequired,
   restaurants: PropTypes.arrayOf(PropTypes.object).isRequired,
   hasMore: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
@@ -40,13 +39,12 @@ const Restaurants = ({
   userLocated,
   locationLoading,
   locationError,
-  getCategories,
   getCuisines,
   getRestaurants,
   clearRestaurants,
   cityID,
-  categories,
   cuisines,
+  selectedCuisines,
   restaurants,
   hasMore,
   loading,
@@ -55,13 +53,14 @@ const Restaurants = ({
   const { sortBy, orderBy } = queryString.parse(location.search);
   const handleScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      if (hasMore) getRestaurants(cityID, [], sortBy);
+      if (hasMore) getRestaurants(cityID, selectedCuisines, sortBy);
     }
   };
   const handleScrollDebounced = useCallback(debounce(handleScroll, 300), [
     hasMore,
     cityID,
     sortBy,
+    selectedCuisines,
   ]);
 
   useEffect(() => {
@@ -73,20 +72,19 @@ const Restaurants = ({
 
   useEffect(() => {
     if (userLocated) {
-      getCategories(cityID);
       getCuisines(cityID);
     }
-  }, [getCategories, getCuisines, cityID, userLocated]);
+  }, [getCuisines, cityID, userLocated]);
 
   useEffect(() => {
     clearRestaurants();
-  }, [clearRestaurants, cityID, sortBy, orderBy]);
+  }, [clearRestaurants, cityID, sortBy, orderBy, selectedCuisines]);
 
   useEffect(() => {
     if (userLocated) {
-      getRestaurants(cityID, [], sortBy, orderBy);
+      getRestaurants(cityID, selectedCuisines, sortBy, orderBy);
     }
-  }, [getRestaurants, cityID, userLocated, sortBy, orderBy]);
+  }, [getRestaurants, cityID, userLocated, sortBy, orderBy, selectedCuisines]);
 
   const [sideDrawerOpen, setSideDrawer] = useState(false);
   const sideDrawerHandler = open => {
@@ -99,7 +97,7 @@ const Restaurants = ({
   return (
     <Wrapper>
       <Header setSideDrawerOpen={sideDrawerHandler} />
-      {restaurants.length === 0 && <Spinner />}
+      {restaurants.length === 0 && loading && <Spinner />}
       <Grid>
         <RestaurantList restaurants={restaurants} />
       </Grid>
@@ -108,7 +106,7 @@ const Restaurants = ({
         showSideDrawer={sideDrawerOpen}
         setSideDrawerOpen={sideDrawerHandler}
       >
-        <Filter />
+        <Filter cuisines={cuisines} setSideDrawerOpen={sideDrawerHandler} />
       </SideDrawer>
     </Wrapper>
   );
@@ -120,8 +118,8 @@ const mapStateToProps = state => {
     locationError: state.location.locationError,
     userLocated: !!state.location.userLocation.id,
     cityID: state.location.userLocation.id || 0,
-    categories: state.filter.categories,
     cuisines: state.filter.cuisines,
+    selectedCuisines: state.filter.selectedCuisines,
     restaurants: state.restaurants.restaurants,
     hasMore: state.restaurants.hasMore,
     loading: state.restaurants.loading,
@@ -130,10 +128,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getCategories: cityID =>
-      dispatch(filtersAction.getRestaurantCategories(cityID)),
     getCuisines: cityID => dispatch(filtersAction.getCusines(cityID)),
-    getRestaurants: (cityID, cuisines = [], sortBy = '', orderBy = '') =>
+    getRestaurants: (cityID, cuisines = '', sortBy = '', orderBy = '') =>
       dispatch(
         restaurantsAction.getRestaurants(cityID, cuisines, sortBy, orderBy)
       ),

@@ -1,11 +1,13 @@
 import {
   GET_RESTAURANT_CATEGORIES,
   GET_CUISINES,
+  SET_CUISINES,
 } from '../actions/actionTypes';
 
 const initialState = {
   categories: [],
   cuisines: [],
+  selectedCuisines: '',
 };
 
 const filtersReducer = (state = initialState, action) => {
@@ -19,6 +21,11 @@ const filtersReducer = (state = initialState, action) => {
       return {
         ...state,
         cuisines: action.cuisines,
+      };
+    case SET_CUISINES:
+      return {
+        ...state,
+        selectedCuisines: action.selectedCuisines,
       };
     default:
       return state;
