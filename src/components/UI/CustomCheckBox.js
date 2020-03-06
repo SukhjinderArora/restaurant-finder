@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { ReactComponent as CheckBoxIconSVG } from '../../assets/images/svg/check.svg';
 
 const propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   selected: PropTypes.bool.isRequired,
