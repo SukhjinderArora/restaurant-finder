@@ -1,8 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { NavLink, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
+
+const propTypes = {
+  setSideDrawerOpen: PropTypes.func.isRequired,
+};
 
 const StyledHeader = styled.header`
   display: flex;
@@ -28,6 +33,10 @@ const NavList = styled.ul`
 
 const ListItem = styled.li`
   margin-right: 1rem;
+  cursor: pointer;
+  &:hover {
+    color: #fc8019;
+  }
 `;
 
 const Link = styled(NavLink)`
@@ -39,7 +48,7 @@ const Link = styled(NavLink)`
   }
 `;
 
-const Header = () => {
+const Header = ({ setSideDrawerOpen }) => {
   const location = useSelector(state => state.location.userLocation);
   const { sortBy } = queryString.parse(useLocation().search);
   return (
@@ -64,10 +73,12 @@ const Header = () => {
             Rating
           </Link>
         </ListItem>
-        <ListItem>Filters</ListItem>
+        <ListItem onClick={() => setSideDrawerOpen(true)}>Filters</ListItem>
       </NavList>
     </StyledHeader>
   );
 };
+
+Header.propTypes = propTypes;
 
 export default Header;

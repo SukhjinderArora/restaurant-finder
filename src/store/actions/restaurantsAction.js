@@ -17,7 +17,7 @@ export const getRestaurants = (cityID, cuisines, sortBy, orderBy) => {
         params: {
           entity_id: cityID,
           entity_type: 'city',
-          cuisines: cuisines.join(','),
+          cuisines,
           sort: sortBy,
           order: orderBy,
           start: getState().restaurants.offset,

@@ -13,7 +13,7 @@ const StyledBackdrop = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 100;
+  z-index: 300;
   background-color: rgb(0, 0, 0);
   transition: opacity ease-in 0.3s, visibility ease-in 0.3s;
   opacity: ${props => (props.showBackdrop ? 0.3 : 0)};

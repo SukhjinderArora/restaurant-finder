@@ -1,59 +1,193 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes, { object } from 'prop-types';
+import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
-// const Filter = ({ type, filterList }) => {
+import * as filtersAction from '../store/actions/filtersAction';
 
-//   if (type === 'Category') {
+import { ReactComponent as CloseIconSVG } from '../assets/images/svg/close.svg';
 
-//   } else if (type === 'Cuisines') {
+import CustomCheckBox from './UI/CustomCheckBox';
 
-//   }
-//            return (
-//              <div>
-//                <h1>
-//                  Filter by
-//                  {type}
-//                </h1>
-//                <div className="filter-list">
-//                  <input type="checkbox" id="bar" name="bar" />
-//                  <label htmlFor="bar">Bar</label>
-//                </div>
-//              </div>
-//            );
-// };
-
-const Filter = ({ type, filterList }) => {
-  console.log(filterList);
-  let filters;
-  if (type === 'category') {
-    filters = filterList.map(filter => (
-      <div>
-        <input
-          type="checkbox"
-          id={filter.establishment.id}
-          name={filter.establishment.id}
-          value={filter.establishment.name}
-        />
-        <lable htmlFor={filter.establishment.id}>
-          {filter.establishment.name}
-        </lable>
-      </div>
-    ));
-  } else if (type === 'cuisine') {
-    filters = filterList.map(filter => (
-      <div>
-        <input
-          type="checkbox"
-          id={filter.cuisine.cuisine_id}
-          name={filter.cuisine.cuisine_id}
-          value={filter.cuisine.cuisine_name}
-        />
-        <lable htmlFor={filter.cuisine.cuisine_id}>
-          {filter.cuisine.cuisine_name}
-        </lable>
-      </div>
-    ));
-  }
-  return <div>{filters}</div>;
+const propTypes = {
+  cuisines: PropTypes.arrayOf(object).isRequired,
+  setSideDrawerOpen: PropTypes.func.isRequired,
 };
+
+const Wrapper = styled.div`
+  padding: 2rem;
+`;
+
+const Header = styled.header`
+  display: flex;
+  align-items: center;
+`;
+
+const CloseButton = styled.button`
+  background-color: transparent;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const CloseIcon = styled(CloseIconSVG)`
+  width: 5rem;
+  cursor: pointer;
+  &:hover polygon {
+    fill: #fc8019;
+  }
+`;
+
+const HeaderText = styled.h1`
+  font-size: 3rem;
+  font-weight: 400;
+  margin-left: 1rem;
+`;
+
+const FilterContainer = styled.div`
+  margin: 1rem;
+`;
+
+const FilterType = styled.h2`
+  font-size: 2.5rem;
+  font-weight: 400;
+`;
+
+const FilterList = styled.ul`
+  list-style: none;
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 35rem;
+  height: 100%;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #fc8019;
+    outline: 1px solid slategrey;
+    border-radius: 5px;
+  }
+`;
+
+const FilterItem = styled.li`
+  font-size: 1.4rem;
+  color: rgba(0, 0, 0, 0.75);
+  max-width: 50%;
+  width: 100%;
+  margin: 5px 0;
+`;
+
+const ButtonsContainer = styled.div`
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const Button = styled.button`
+  font-family: inherit;
+  font-weight: 700;
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  padding: 1.5rem 3rem;
+  cursor: pointer;
+`;
+
+const ClearButton = styled(Button)`
+  color: #535665;
+  border: 1px solid #535665;
+  background: #fff;
+  &:hover {
+    background: #535665;
+    color: #fff;
+    border: 1px solid #535665;
+  }
+`;
+
+const SubmitButton = styled(Button)`
+  background: #fc8019;
+  color: #fff;
+  border: 1px solid transparent;
+  &:hover {
+    background: #fff;
+    color: #fc8019;
+    border: 1px solid #fc8019;
+  }
+`;
+
+const Filter = ({ cuisines, setSideDrawerOpen }) => {
+  const [selectedCuisines, setSelectedCuisines] = useState({});
+  const dispatch = useDispatch();
+
+  const onCheckBoxChangeHandler = (id, value, e) => {
+    if (e.target.checked) {
+      const newState = {
+        ...selectedCuisines,
+        [id]: value,
+      };
+      setSelectedCuisines(newState);
+    } else {
+      const newState = { ...selectedCuisines };
+      delete newState[id];
+      setSelectedCuisines(newState);
+    }
+  };
+
+  const clearButtonHandler = e => {
+    e.preventDefault();
+    setSelectedCuisines({});
+  };
+
+  const submitButtonHandler = e => {
+    e.preventDefault();
+    const cuisineString = Object.keys(selectedCuisines).reduce(
+      (acc, cur) => `${acc},${cur}`,
+      ''
+    );
+    dispatch(filtersAction.setCuisines(cuisineString));
+    setSideDrawerOpen(false);
+  };
+
+  const filterList = cuisines.map(cuisine => (
+    <FilterItem key={cuisine.cuisine.cuisine_id}>
+      <CustomCheckBox
+        id={cuisine.cuisine.cuisine_id}
+        key={cuisine.cuisine.cuisine_id}
+        name="cuisine"
+        value={cuisine.cuisine.cuisine_name}
+        selected={!!selectedCuisines[cuisine.cuisine.cuisine_id]}
+        checkBoxChangeHandler={onCheckBoxChangeHandler}
+      />
+    </FilterItem>
+  ));
+  return (
+    <Wrapper>
+      <Header>
+        <CloseButton onClick={() => setSideDrawerOpen(false)}>
+          <CloseIcon />
+        </CloseButton>
+        <HeaderText>Filters</HeaderText>
+      </Header>
+      <FilterContainer>
+        <FilterType>Cuisines</FilterType>
+        <FilterList>{filterList}</FilterList>
+        <ButtonsContainer>
+          <ClearButton onClick={clearButtonHandler}>Clear</ClearButton>
+          <SubmitButton onClick={submitButtonHandler}>
+            Show Restaurants
+          </SubmitButton>
+        </ButtonsContainer>
+      </FilterContainer>
+    </Wrapper>
+  );
+};
+
+Filter.propTypes = propTypes;
 
 export default Filter;
