@@ -1,3 +1,3 @@
-export const API_KEY = 'f760a527f238344dde269f97d5409b43';
+export const API_KEY = process.env.REACT_APP_API_KEY;
 
 export const baseUrl = 'https://developers.zomato.com/api/v2.1';

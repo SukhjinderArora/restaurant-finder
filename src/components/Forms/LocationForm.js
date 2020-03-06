@@ -31,9 +31,6 @@ const Input = styled.input`
     box-shadow: 0 1px 4px 4px rgba(0, 0, 0, 0.1);
     outline: 0;
   }
-  ::-moz-placeholder {
-    color: #fff;
-  }
 `;
 
 const SubmitButton = styled.button`
