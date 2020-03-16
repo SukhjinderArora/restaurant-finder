@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-curly-newline */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -78,7 +79,9 @@ const AutoComplete = ({ list, type, onListItemClick, onListItemKeyDown }) => {
     listItems = list.map(listItem => (
       <ListItem
         key={listItem.restaurant.id}
-        onClick={() => onListItemClick(listItem.restaurant.name)}
+        onClick={e =>
+          onListItemClick(listItem.restaurant.id, listItem.restaurant.name, e)
+        }
       >
         <ListItemText>{listItem.restaurant.name}</ListItemText>
         <ListItemSubText>

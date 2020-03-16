@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 
 import FormContainer from './Forms/FormContainer';
@@ -34,6 +35,7 @@ const Search = ({
 }) => {
   const [inputText, setInputText] = useState('');
   const [showAutoComplete, setAutoCompleteVisibility] = useState(false);
+  const history = useHistory();
   const searchRestaurantsDebounced = useCallback(
     debounce(searchRestaurants, 200),
     []
@@ -61,9 +63,11 @@ const Search = ({
     clearResults();
   };
 
-  const listItemClickHandler = name => {
+  const listItemClickHandler = (id, name, e) => {
+    e.preventDefault();
     setInputText(name);
     setAutoCompleteVisibility(false);
+    history.push(`/restaurant/${name.replace(/\s/gi, '-')}/${id}`, { id });
   };
 
   return (

@@ -2,6 +2,7 @@ import {
   GET_RESTAURANT_CATEGORIES,
   GET_CUISINES,
   SET_CUISINES,
+  CLEAR_SELECTED_CUISINES,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -26,6 +27,11 @@ const filtersReducer = (state = initialState, action) => {
       return {
         ...state,
         selectedCuisines: action.selectedCuisines,
+      };
+    case CLEAR_SELECTED_CUISINES:
+      return {
+        ...state,
+        selectedCuisines: '',
       };
     default:
       return state;

@@ -3,10 +3,14 @@ import {
   GET_RESTAURANTS_SUCCESS,
   GET_RESTAURANTS_ERROR,
   CLEAR_RESTAURANTS,
+  GET_RESTAURANT_START,
+  GET_RESTAURANT_SUCCESS,
+  GET_RESTAURANT_ERROR,
 } from '../actions/actionTypes';
 
 const initialState = {
   restaurants: [],
+  restaurant: {},
   offset: 0,
   totalResults: 0,
   loading: false,
@@ -48,6 +52,25 @@ const restaurantReducer = (state = initialState, action) => {
         offset: 0,
         totalResults: 0,
         hasMore: false,
+      };
+    case GET_RESTAURANT_START:
+      return {
+        ...state,
+        restaurant: {},
+        loading: true,
+      };
+    case GET_RESTAURANT_SUCCESS:
+      return {
+        ...state,
+        restaurant: action.restaurant,
+        loading: false,
+      };
+    case GET_RESTAURANT_ERROR:
+      return {
+        ...state,
+        restaurant: {},
+        loading: false,
+        error: true,
       };
     default:
       return state;

@@ -9,6 +9,7 @@ import {
   GET_CUISINES,
   GET_CUISINES_FAIL,
   SET_CUISINES,
+  CLEAR_SELECTED_CUISINES,
 } from './actionTypes';
 
 export const getRestaurantCategories = cityID => {
@@ -57,4 +58,10 @@ export const setCuisines = cuisines => {
     type: SET_CUISINES,
     selectedCuisines: cuisines,
   };
-}
+};
+
+export const clearSelectedCuisines = () => {
+  return {
+    type: CLEAR_SELECTED_CUISINES,
+  };
+};

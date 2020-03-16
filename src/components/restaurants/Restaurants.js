@@ -1,20 +1,20 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Redirect, useLocation } from 'react-router-dom';
+import { Redirect, useLocation, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import debounce from 'lodash.debounce';
 import queryString from 'query-string';
 
-import Grid from './UI/Grid';
-import Spinner from './UI/Spinner';
+import Grid from '../UI/Grid';
+import Spinner from '../UI/Spinner';
 import Header from './Header';
-import SideDrawer from './Navigation/SideDrawer';
-import Filter from './Filter';
+import SideDrawer from '../Navigation/SideDrawer';
+import Filter from '../Filter';
 import RestaurantList from './RestaurantList';
 
-import * as filtersAction from '../store/actions/filtersAction';
-import * as restaurantsAction from '../store/actions/restaurantsAction';
+import * as filtersAction from '../../store/actions/filtersAction';
+import * as restaurantsAction from '../../store/actions/restaurantsAction';
 
 const propTypes = {
   userLocated: PropTypes.bool.isRequired,
@@ -50,6 +50,7 @@ const Restaurants = ({
   loading,
 }) => {
   const location = useLocation();
+  const history = useHistory();
   const { sortBy, orderBy } = queryString.parse(location.search);
   const handleScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
@@ -91,6 +92,11 @@ const Restaurants = ({
     setSideDrawer(open);
   };
 
+  const viewRestaurantBtnHandler = (id, name, e) => {
+    e.preventDefault();
+    history.push(`/restaurant/${name.replace(/\s/gi, '-')}/${id}`, { id });
+  };
+
   if (locationLoading) return <Spinner />;
   if (locationError) return <div>Error getting location</div>;
   if (!userLocated) return <Redirect to="/location" />;
@@ -99,7 +105,10 @@ const Restaurants = ({
       <Header setSideDrawerOpen={sideDrawerHandler} />
       {restaurants.length === 0 && loading && <Spinner />}
       <Grid>
-        <RestaurantList restaurants={restaurants} />
+        <RestaurantList
+          restaurants={restaurants}
+          viewButtonHandler={viewRestaurantBtnHandler}
+        />
       </Grid>
       {hasMore && loading && <Spinner />}
       <SideDrawer
