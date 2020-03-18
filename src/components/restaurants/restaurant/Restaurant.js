@@ -5,12 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { getRestaurant } from '../../../store/actions/restaurantsAction';
-import getReviews from '../../../store/actions/reviewsAction';
+import { getReviews, clearReviews } from '../../../store/actions/reviewsAction';
 
 import Spinner from '../../UI/Spinner';
 import Header from './Header';
 import Overview from './Overview';
-import Reviews from '../../reviews/Reviews';
+import Reviews from './reviews/Reviews';
 
 const Wrapper = styled.div`
   max-width: 120rem;
@@ -24,7 +24,8 @@ const Restaurant = () => {
   const { loading, error, restaurant } = useSelector(
     state => state.restaurants
   );
-  const { reviews } = useSelector(state => state.reviews);
+  const { reviews, totalReviews, offset } = useSelector(state => state.reviews);
+  const hasMoreReviews = totalReviews > 10 && offset <= 10;
   const {
     name,
     thumb,
@@ -38,8 +39,22 @@ const Restaurant = () => {
 
   useEffect(() => {
     dispatch(getRestaurant(id));
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    dispatch(clearReviews());
+  }, [id, dispatch]);
+
+  useEffect(() => {
     dispatch(getReviews(id));
   }, [id, dispatch]);
+
+  const loadMoreReviewsHandler = e => {
+    e.preventDefault();
+    if (hasMoreReviews) {
+      dispatch(getReviews(id));
+    }
+  };
 
   if (error) return <div>Error</div>;
   if (loading || !restaurant.id) return <Spinner />;
@@ -60,7 +75,11 @@ const Restaurant = () => {
         highlights={highlights}
         averageCost={`${restaurant.currency}${restaurant.average_cost_for_two}`}
       />
-      <Reviews reviews={reviews} />
+      <Reviews
+        reviews={reviews}
+        hasMore={hasMoreReviews}
+        loadMoreReviewsHandler={loadMoreReviewsHandler}
+      />
     </Wrapper>
   );
 };

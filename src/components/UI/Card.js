@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import * as placeholderImage from '../../assets/images/placeholder_image.jpg';
-import ratingIcon from '../../assets/images/svg/star.svg';
+import RatingIcon from './RatingIcon';
 
 const propTypes = {
   imageUrl: PropTypes.string.isRequired,
@@ -44,11 +44,12 @@ const CardContent = styled.div`
 
 const Text = styled.p`
   text-align: left;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
 `;
 
 const Name = styled(Text)`
   font-size: 1.8rem;
+  color: #212121;
   margin-bottom: 5px;
 `;
 
@@ -57,26 +58,15 @@ const Cuisines = styled(Text)`
   color: rgba(0, 0, 0, 0.8);
 `;
 
-const RatingsContainer = styled.div`
+const FlexContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  font-size: 1.4rem;
-  color: rgba(0, 0, 0, 0.9);
+  align-content: center;
   margin-top: 1.5rem;
 `;
 
-const Ratings = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const RatingIcon = styled.img`
-  width: 15px;
-  margin-right: 5px;
-`;
-
-const RatingText = styled.p`
-  font-size: 1.6rem;
+const Cost = styled(Text)`
+  color: rgba(0, 0, 0, 0.9);
 `;
 
 const LocationText = styled(Text)`
@@ -88,7 +78,8 @@ const ViewButton = styled.button`
   opacity: 0;
   visibility: hidden;
   font-family: inherit;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
+  text-transform: uppercase;
   background-color: #fff;
   color: #fb923b;
   border: none;
@@ -127,13 +118,10 @@ const Card = ({
             .slice(0, 3)
             .join(', ')}
         </Cuisines>
-        <RatingsContainer>
-          <Ratings>
-            <RatingIcon src={ratingIcon} alt="Rating Icon" />
-            <RatingText>{rating}</RatingText>
-          </Ratings>
-          <p>{`${cost} FOR TWO`}</p>
-        </RatingsContainer>
+        <FlexContainer>
+          <RatingIcon rating={rating} />
+          <Cost>{`${cost} FOR TWO`}</Cost>
+        </FlexContainer>
         <LocationText>{location}</LocationText>
         <ViewButton onClick={viewRestaurantBtnHandler}>
           View Restaurant

@@ -35,7 +35,7 @@ const Ratings = styled.h2`
   display: inline-block;
   font-size: 2.5rem;
   color: #fff;
-  background-color: #008045;
+  background-color: ${props => (props.rating < 3 ? '#ff9f00' : '#388e3c')};
   padding: 1rem;
   margin: 1rem 0;
 `;
@@ -68,7 +68,7 @@ const RestaurantHeader = ({
       <Wrapper>
         <div>
           <Title>{title}</Title>
-          <Ratings>
+          <Ratings rating={rating}>
             {rating}
             /5
           </Ratings>

@@ -6,6 +6,8 @@ import Review from './review/Review';
 
 const propTypes = {
   reviews: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loadMoreReviewsHandler: PropTypes.func.isRequired,
+  hasMore: PropTypes.bool.isRequired,
 };
 
 const Wrapper = styled.section`
@@ -23,7 +25,26 @@ const ReviewsContainer = styled.div`
   margin-top: 2rem;
 `;
 
-const Reviews = ({ reviews }) => {
+const LoadMoreButton = styled.button`
+  display: block;
+  background: #fc8019;
+  color: #fff;
+  font-family: inherit;
+  font-size: 1.4rem;
+  border: 1px solid transparent;
+  padding: 1rem;
+  margin: 0 auto;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  &:hover {
+    background: #fff;
+    color: #fc8019;
+    border: 1px solid #fc8019;
+  }
+`;
+
+const Reviews = ({ reviews, loadMoreReviewsHandler, hasMore }) => {
   return (
     <Wrapper>
       <Header>Reviews</Header>
@@ -39,6 +60,11 @@ const Reviews = ({ reviews }) => {
           />
         ))}
       </ReviewsContainer>
+      {hasMore && (
+        <LoadMoreButton onClick={loadMoreReviewsHandler}>
+          Load More Reviews
+        </LoadMoreButton>
+      )}
     </Wrapper>
   );
 };
