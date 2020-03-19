@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -8,8 +8,11 @@ import { getRestaurant } from '../../../store/actions/restaurantsAction';
 import { getReviews, clearReviews } from '../../../store/actions/reviewsAction';
 
 import Spinner from '../../UI/Spinner';
+import Modal from '../../UI/Modal';
 import Header from './Header';
 import Overview from './Overview';
+import Photos from './Photos';
+import Photo from './Photo';
 import Reviews from './reviews/Reviews';
 
 const Wrapper = styled.div`
@@ -35,6 +38,7 @@ const Restaurant = () => {
     location,
     timings,
     highlights,
+    photos,
   } = restaurant;
 
   useEffect(() => {
@@ -56,10 +60,21 @@ const Restaurant = () => {
     }
   };
 
+  const [showModal, setModalState] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+
+  const setModal = (show, imgUrl = '') => {
+    setImageUrl(imgUrl);
+    setModalState(show);
+  };
+
   if (error) return <div>Error</div>;
   if (loading || !restaurant.id) return <Spinner />;
   return (
     <Wrapper>
+      <Modal showModal={showModal} setModal={setModal}>
+        <Photo imageUrl={imageUrl} />
+      </Modal>
       <Header
         imageUrl={thumb}
         title={name}
@@ -75,11 +90,14 @@ const Restaurant = () => {
         highlights={highlights}
         averageCost={`${restaurant.currency}${restaurant.average_cost_for_two}`}
       />
-      <Reviews
-        reviews={reviews}
-        hasMore={hasMoreReviews}
-        loadMoreReviewsHandler={loadMoreReviewsHandler}
-      />
+      {photos && <Photos photos={photos} setModal={setModal} />}
+      {reviews.length > 0 && (
+        <Reviews
+          reviews={reviews}
+          hasMore={hasMoreReviews}
+          loadMoreReviewsHandler={loadMoreReviewsHandler}
+        />
+      )}
     </Wrapper>
   );
 };
