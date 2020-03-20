@@ -9,6 +9,8 @@ import {
   SET_LOCATION_FAIL,
 } from './actionTypes';
 
+import { saveState } from '../../localStorage';
+
 export const getListOfCities = searchQuery => {
   return async dispatch => {
     const response = await axios.get(`${baseUrl}/cities`, {
@@ -44,8 +46,15 @@ const setLocationFail = () => {
   };
 };
 
+export const setLocation = location => {
+  return {
+    type: SET_USER_LOCATION,
+    location,
+  };
+};
+
 export const getUserLocation = id => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     try {
       dispatch(setLocationStart());
       const response = await axios.get(`${baseUrl}/cities`, {
@@ -57,14 +66,20 @@ export const getUserLocation = id => {
         },
       });
       const locationData = response.data.location_suggestions[0];
-      dispatch({
-        type: SET_USER_LOCATION,
+      const userLocation = {
+        id: locationData.id,
+        name: locationData.name,
+        country_id: locationData.country_id,
+        country_name: locationData.country_name,
+        country_flag_url: locationData.country_flag_url,
+      };
+      dispatch(setLocation(userLocation));
+      saveState({
         location: {
-          id: locationData.id,
-          name: locationData.name,
-          country_id: locationData.country_id,
-          country_name: locationData.country_name,
-          country_flag_url: locationData.country_flag_url,
+          cities: getState().location.cities,
+          userLocation,
+          locationLoading: getState().location.locationLoading,
+          locationError: getState().location.locationError,
         },
       });
     } catch (e) {

@@ -9,11 +9,14 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reducer from './store/reducers/reducer';
+import { loadState } from './localStorage';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
+const persistedState = loadState();
 const store = createStore(
   reducer,
+  persistedState,
   /* preloadedState, */ composeEnhancers(applyMiddleware(thunk))
 );
 
