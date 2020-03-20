@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import debounce from 'lodash.debounce';
 
@@ -10,6 +10,7 @@ import AutoComplete from './Forms/AutoComplete';
 import InputError from './Forms/InputError';
 
 import * as location from '../store/actions/locationActions';
+import { clearSelectedCuisines } from '../store/actions/filtersAction';
 
 import backgroundImage from '../assets/images/svg/background.svg';
 
@@ -44,21 +45,25 @@ const Location = ({
   const [inputText, setInputText] = useState('');
   const [inputError, setInputError] = useState(false);
   const [showAutoComplete, setAutoCompleteVisibility] = useState(false);
+  const dispatch = useDispatch();
   const getListOfCitiesDebounced = useCallback(
     debounce(getListOfCities, 200),
     []
   );
 
-  function handleChange(e) {
-    setInputText(e.target.value);
-    if (e.target.value.length > 2) {
+  useEffect(() => {
+    if (inputText.length > 2) {
       setAutoCompleteVisibility(true);
-      getListOfCitiesDebounced(e.target.value);
+      getListOfCitiesDebounced(inputText);
     } else {
       clearListOfCities();
       setAutoCompleteVisibility(false);
     }
     if (inputError) setInputError(false);
+  }, [inputText, inputError, getListOfCitiesDebounced, clearListOfCities]);
+
+  function handleChange(e) {
+    setInputText(e.target.value);
   }
 
   function formSubmitHandler(e) {
@@ -79,6 +84,7 @@ const Location = ({
     setInputText(name);
     setAutoCompleteVisibility(false);
     getUserLocation(id);
+    dispatch(clearSelectedCuisines());
     history.push('/restaurants');
   }
 

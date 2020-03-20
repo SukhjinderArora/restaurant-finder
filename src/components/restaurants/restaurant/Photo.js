@@ -30,7 +30,7 @@ const Photo = ({ imageUrl }) => {
   return (
     <PhotoWrapper>
       <Image src={imageUrl} onLoad={onImageLoad} imageLoaded={imageLoaded} />
-      {(!imageLoaded || !imageUrl) && <SpinnerRect />}
+      {!imageLoaded && <SpinnerRect />}
     </PhotoWrapper>
   );
 };

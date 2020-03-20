@@ -69,7 +69,7 @@ const Restaurants = ({
     return () => {
       window.removeEventListener('scroll', handleScrollDebounced, false);
     };
-  });
+  }, [handleScrollDebounced]);
 
   useEffect(() => {
     if (userLocated) {

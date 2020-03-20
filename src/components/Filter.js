@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes, { object } from 'prop-types';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import * as filtersAction from '../store/actions/filtersAction';
 
@@ -127,6 +127,18 @@ const SubmitButton = styled(Button)`
 const Filter = ({ cuisines, setSideDrawerOpen }) => {
   const [selectedCuisines, setSelectedCuisines] = useState({});
   const dispatch = useDispatch();
+  const selectedCuisinesStr = useSelector(
+    state => state.filter.selectedCuisines
+  );
+
+  useEffect(() => {
+    const selectedCuisinesArray = selectedCuisinesStr.split(',');
+    const selectedCuisinesObj = {};
+    selectedCuisinesArray.forEach(cuisineId => {
+      selectedCuisinesObj[cuisineId] = cuisineId;
+    });
+    setSelectedCuisines(selectedCuisinesObj);
+  }, [selectedCuisinesStr]);
 
   const onCheckBoxChangeHandler = (id, value, e) => {
     if (e.target.checked) {

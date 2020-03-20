@@ -72,9 +72,11 @@ const Restaurant = () => {
   if (loading || !restaurant.id) return <Spinner />;
   return (
     <Wrapper>
-      <Modal showModal={showModal} setModal={setModal}>
-        <Photo imageUrl={imageUrl} />
-      </Modal>
+      {showModal && (
+        <Modal showModal={showModal} setModal={setModal}>
+          <Photo imageUrl={imageUrl} />
+        </Modal>
+      )}
       <Header
         imageUrl={thumb}
         title={name}

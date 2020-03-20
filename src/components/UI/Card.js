@@ -106,7 +106,7 @@ const Card = ({
   viewRestaurantBtnHandler,
 }) => {
   return (
-    <CardContainer>
+    <CardContainer onClick={viewRestaurantBtnHandler}>
       <ImageContainer>
         <Image src={imageUrl || placeholderImage} alt="Restaurant Image" />
       </ImageContainer>

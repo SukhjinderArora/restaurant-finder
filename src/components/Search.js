@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -41,19 +41,28 @@ const Search = ({
     []
   );
 
+  useEffect(() => {
+    if (inputText.length > 2 && userLocation.id) {
+      searchRestaurantsDebounced(inputText, userLocation.id);
+      setAutoCompleteVisibility(true);
+    } else {
+      setAutoCompleteVisibility(false);
+      clearResults();
+    }
+  }, [
+    inputText,
+    userLocation.id,
+    searchRestaurantsDebounced,
+    setAutoCompleteVisibility,
+    clearResults,
+  ]);
+
   const formSubmitHandler = e => {
     e.preventDefault();
   };
 
   const inputChangeHandler = e => {
     setInputText(e.target.value);
-    if (e.target.value.length > 2 && userLocation.id) {
-      searchRestaurantsDebounced(e.target.value, userLocation.id);
-      setAutoCompleteVisibility(true);
-    } else {
-      setAutoCompleteVisibility(false);
-      clearResults();
-    }
   };
 
   const clearInput = e => {
