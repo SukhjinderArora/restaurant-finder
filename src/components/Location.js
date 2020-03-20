@@ -59,11 +59,11 @@ const Location = ({
       clearListOfCities();
       setAutoCompleteVisibility(false);
     }
-    if (inputError) setInputError(false);
-  }, [inputText, inputError, getListOfCitiesDebounced, clearListOfCities]);
+  }, [inputText, getListOfCitiesDebounced, clearListOfCities]);
 
   function handleChange(e) {
     setInputText(e.target.value);
+    if (inputError) setInputError(false);
   }
 
   function formSubmitHandler(e) {
