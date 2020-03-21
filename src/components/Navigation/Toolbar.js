@@ -1,9 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import ToggleButton from '../UI/ToggleButton';
 import Logo from '../UI/Logo';
 import SearchButton from '../UI/SearchButton';
+
+const propTypes = {
+  setSideDrawerOpen: PropTypes.func.isRequired,
+};
 
 const ToolbarWrapper = styled.header`
   display: flex;
@@ -24,14 +29,16 @@ const ToolbarWrapper = styled.header`
   }
 `;
 
-const Toolbar = () => {
+const Toolbar = ({ setSideDrawerOpen }) => {
   return (
     <ToolbarWrapper>
-      <ToggleButton />
+      <ToggleButton onClickHandler={() => setSideDrawerOpen(true)} />
       <Logo to="/">Restaurant Finder</Logo>
       <SearchButton />
     </ToolbarWrapper>
   );
 };
+
+Toolbar.propTypes = propTypes;
 
 export default Toolbar;

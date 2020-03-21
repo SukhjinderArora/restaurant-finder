@@ -1,12 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ReactComponent as SearchIconSVG } from '../../assets/images/svg/search.svg';
-
-const propTypes = {
-  onClickHandler: PropTypes.func.isRequired,
-};
 
 const StyledSearchButton = styled.button`
   background-color: #fff;
@@ -20,14 +16,16 @@ const SearchIcon = styled(SearchIconSVG)`
   fill: #fc8019;
 `;
 
-const SearchButton = ({ onClickHandler }) => {
+const SearchButton = () => {
+  const history = useHistory();
+  const searchButtonHandler = () => {
+    history.push('/search');
+  };
   return (
-    <StyledSearchButton onClick={onClickHandler}>
+    <StyledSearchButton onClick={searchButtonHandler}>
       <SearchIcon />
     </StyledSearchButton>
   );
 };
-
-SearchButton.propTypes = propTypes;
 
 export default SearchButton;

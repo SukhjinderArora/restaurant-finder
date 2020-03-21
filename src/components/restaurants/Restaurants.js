@@ -114,6 +114,7 @@ const Restaurants = ({
       <SideDrawer
         showSideDrawer={sideDrawerOpen}
         setSideDrawerOpen={sideDrawerHandler}
+        direction="right"
       >
         <Filter cuisines={cuisines} setSideDrawerOpen={sideDrawerHandler} />
       </SideDrawer>
