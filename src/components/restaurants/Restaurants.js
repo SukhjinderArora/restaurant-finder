@@ -9,6 +9,7 @@ import queryString from 'query-string';
 import Grid from '../UI/Grid';
 import Spinner from '../UI/Spinner';
 import Header from './Header';
+import MobileHeader from './MobileHeader';
 import SideDrawer from '../Navigation/SideDrawer';
 import Filter from '../Filter';
 import RestaurantList from './RestaurantList';
@@ -103,6 +104,7 @@ const Restaurants = ({
   return (
     <Wrapper>
       <Header setSideDrawerOpen={sideDrawerHandler} />
+      <MobileHeader setSideDrawerOpen={sideDrawerHandler} />
       {restaurants.length === 0 && loading && <Spinner />}
       <Grid>
         <RestaurantList

@@ -77,6 +77,11 @@ const FilterList = styled.ul`
     outline: 1px solid slategrey;
     border-radius: 5px;
   }
+  @media (max-width: 499px) {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    height: 30rem;
+  }
 `;
 
 const FilterItem = styled.li`
@@ -85,12 +90,18 @@ const FilterItem = styled.li`
   max-width: 50%;
   width: 100%;
   margin: 5px 0;
+  @media (max-width: 499px) {
+    max-width: 100%;
+  }
 `;
 
 const ButtonsContainer = styled.div`
   margin-top: 2rem;
   display: flex;
   justify-content: space-around;
+  @media (max-width: 499px) {
+    flex-direction: column;
+  }
 `;
 
 const Button = styled.button`
@@ -100,6 +111,9 @@ const Button = styled.button`
   text-transform: uppercase;
   padding: 1.5rem 3rem;
   cursor: pointer;
+  @media (max-width: 499px) {
+    padding: 1.5rem 0;
+  }
 `;
 
 const ClearButton = styled(Button)`
@@ -110,6 +124,9 @@ const ClearButton = styled(Button)`
     background: #535665;
     color: #fff;
     border: 1px solid #535665;
+  }
+  @media (max-width: 499px) {
+    margin-bottom: 1rem;
   }
 `;
 

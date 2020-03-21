@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { NavLink, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 
+import { ReactComponent as FilterIconSVG } from '../../assets/images/svg/filter.svg';
+
 const propTypes = {
   setSideDrawerOpen: PropTypes.func.isRequired,
 };
@@ -18,6 +20,9 @@ const StyledHeader = styled.header`
   border-bottom: 1px solid #e8e8e8;
   max-width: 1200px;
   margin: 0 auto;
+  @media (max-width: 499px) {
+    display: none;
+  }
 `;
 
 const Heading = styled.h1`
@@ -37,6 +42,12 @@ const ListItem = styled.li`
   &:hover {
     color: #fc8019;
   }
+  display: flex;
+  align-items: center;
+  & span {
+    color: #3d4152;
+    font-weight: 700;
+  }
 `;
 
 const Link = styled(NavLink)`
@@ -46,6 +57,13 @@ const Link = styled(NavLink)`
   &:hover {
     color: #fc8019;
   }
+`;
+
+const FilterIcon = styled(FilterIconSVG)`
+  fill: #fc8019;
+  width: 2rem;
+  height: 2rem;
+  margin-left: 5px;
 `;
 
 const Header = ({ setSideDrawerOpen }) => {
@@ -73,7 +91,10 @@ const Header = ({ setSideDrawerOpen }) => {
             Rating
           </Link>
         </ListItem>
-        <ListItem onClick={() => setSideDrawerOpen(true)}>Filters</ListItem>
+        <ListItem onClick={() => setSideDrawerOpen(true)}>
+          <span>Filters</span>
+          <FilterIcon />
+        </ListItem>
       </NavList>
     </StyledHeader>
   );

@@ -31,8 +31,11 @@ const StyledSideDrawer = styled.div`
     }}
   );
   @media (max-width: 499px) {
-    max-width: 70%;
-    width: 28rem;
+    /* max-width: 70%;
+    width: 28rem; */
+
+    max-width: 80%;
+    width: 30rem;
   }
 `;
 
