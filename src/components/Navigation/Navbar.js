@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
+import Logo from '../UI/Logo';
 import { ReactComponent as SearchIconSVG } from '../../assets/images/svg/search-icon.svg';
 import { ReactComponent as LocationIconSVG } from '../../assets/images/svg/location-icon.svg';
 
@@ -32,15 +33,8 @@ const Navigation = styled.nav`
   justify-content: space-between;
   padding: 0 2rem;
   box-shadow: 0 2px 10px 2px rgba(0, 0, 0, 0.1);
-`;
-
-const Logo = styled(NavLink)`
-  text-decoration: none;
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: #5f5e5e;
-  :hover {
-    color: #fc8019;
+  @media (max-width: 499px) {
+    display: none;
   }
 `;
 

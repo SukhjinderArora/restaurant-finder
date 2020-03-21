@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import Toolbar from './Navigation/Toolbar';
 import Navbar from './Navigation/Navbar';
 import Footer from './Navigation/Footer';
 import SideDrawer from './Navigation/SideDrawer';
@@ -17,6 +18,7 @@ const Layout = ({ children }) => {
 
   return (
     <>
+      <Toolbar />
       <Navbar setSideDrawerOpen={sideDrawerHandler} />
       <SideDrawer
         showSideDrawer={sideDrawerOpen}
