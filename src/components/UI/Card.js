@@ -30,7 +30,7 @@ const CardContainer = styled.div`
     padding: 0;
     margin: 1rem 2rem;
     align-items: flex-start;
-    width: 100%;
+    max-width: 100%;
   }
 `;
 
