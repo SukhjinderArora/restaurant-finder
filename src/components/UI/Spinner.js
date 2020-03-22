@@ -30,6 +30,7 @@ const Spinner = styled.div`
     width: 50px;
     height: 50px;
     border-width: 3px;
+    padding-top: 2rem;
     &::after {
       width: 50px;
       height: 50px;

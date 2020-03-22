@@ -36,6 +36,9 @@ const Image = styled.img`
 
 const Wrapper = styled.div`
   margin-left: 2rem;
+  @media (max-width: 499px) {
+    margin-left: 1rem;
+  }
 `;
 
 const TitleWrapper = styled.div`

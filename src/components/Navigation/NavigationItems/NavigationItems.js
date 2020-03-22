@@ -81,6 +81,14 @@ const LocationFlag = styled.img`
   margin-left: 1rem;
 `;
 
+const ChangeLocation = styled.span`
+  font-size: 1.2rem;
+  margin-left: 1rem;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 const NavigationItems = ({ setSideDrawerOpen }) => {
   const { userLocation } = useSelector(state => state.location);
   const userLocated = !!userLocation.id;
@@ -103,6 +111,7 @@ const NavigationItems = ({ setSideDrawerOpen }) => {
           {userLocated && (
             <LocationFlag src={userLocation.country_flag_url} alt="Flag" />
           )}
+          {userLocated && <ChangeLocation> (change) </ChangeLocation>}
         </NavigationLink>
       </NavigationItem>
     </NavigationList>

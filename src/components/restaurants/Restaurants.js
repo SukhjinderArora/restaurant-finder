@@ -56,11 +56,14 @@ const Restaurants = ({
   const history = useHistory();
   const { sortBy, orderBy } = queryString.parse(location.search);
   const handleScroll = () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+    if (
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 200
+    ) {
       if (hasMore) getRestaurants(cityID, selectedCuisines, sortBy, orderBy);
     }
   };
-  const handleScrollDebounced = useCallback(debounce(handleScroll, 300), [
+  const handleScrollDebounced = useCallback(debounce(handleScroll, 500), [
     hasMore,
     cityID,
     sortBy,
