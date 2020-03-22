@@ -30,6 +30,7 @@ const CardContainer = styled.div`
     padding: 0;
     margin: 1rem 2rem;
     align-items: flex-start;
+    width: 100%;
   }
 `;
 
@@ -56,6 +57,7 @@ const CardContent = styled.div`
   @media (max-width: 499px) {
     margin-top: 0;
     margin-left: 1rem;
+    flex-basis: 80%;
   }
 `;
 

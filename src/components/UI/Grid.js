@@ -20,6 +20,7 @@ const GridContainer = styled.div`
     display: flex;
     flex-direction: column;
     padding-top: 1rem;
+    align-items: center;
   }
 `;
 
