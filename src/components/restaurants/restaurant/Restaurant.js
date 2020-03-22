@@ -19,6 +19,9 @@ const Wrapper = styled.div`
   max-width: 120rem;
   margin: 0 auto;
   margin-top: 5rem;
+  @media (max-width: 499px) {
+    margin-top: 1rem;
+  }
 `;
 
 const Restaurant = () => {

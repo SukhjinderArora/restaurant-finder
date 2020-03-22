@@ -13,6 +13,10 @@ const StyledFooter = styled.footer`
   padding: 1rem 5rem;
   background: rgb(247, 247, 247);
   border-top: 1px solid rgba(142, 142, 142, 0.4);
+  @media (max-width: 499px) {
+    flex-direction: column;
+    padding: 1rem 0.5rem;
+  }
 `;
 
 const CopyRightText = styled.p`

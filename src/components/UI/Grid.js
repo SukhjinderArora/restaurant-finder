@@ -18,12 +18,9 @@ const GridContainer = styled.div`
   margin: 0 auto;
 
   @media (max-width: 499px) {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    & > div {
-      width: 100%;
-      height: 100%;
-    }
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
   }
 `;
 

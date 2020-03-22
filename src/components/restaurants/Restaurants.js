@@ -9,7 +9,6 @@ import queryString from 'query-string';
 import Grid from '../UI/Grid';
 import Spinner from '../UI/Spinner';
 import Header from './Header';
-import MobileHeader from './MobileHeader';
 import SideDrawer from '../Navigation/SideDrawer';
 import Filter from '../Filter';
 import RestaurantList from './RestaurantList';
@@ -34,6 +33,9 @@ const propTypes = {
 
 const Wrapper = styled.div`
   padding-bottom: 17rem;
+  @media (max-width: 499px) {
+    padding-bottom: 5rem;
+  }
 `;
 
 const Restaurants = ({
@@ -104,7 +106,6 @@ const Restaurants = ({
   return (
     <Wrapper>
       <Header setSideDrawerOpen={sideDrawerHandler} />
-      <MobileHeader setSideDrawerOpen={sideDrawerHandler} />
       {restaurants.length === 0 && loading && <Spinner />}
       <Grid>
         <RestaurantList

@@ -12,17 +12,27 @@ const propTypes = {
 
 const Wrapper = styled.section`
   margin-top: 3rem;
+  @media (max-width: 499px) {
+    margin-top: 2rem;
+    padding: 0 1rem;
+  }
 `;
 
 const Header = styled.h2`
   font-size: 3rem;
   font-weight: 400;
+  @media (max-width: 499px) {
+    font-size: 2.5rem;
+  }
 `;
 
 const ReviewsContainer = styled.div`
   border: 1px solid #f0f0f0;
   border-bottom: none;
   margin-top: 2rem;
+  @media (max-width: 499px) {
+    margin-top: 1rem;
+  }
 `;
 
 const LoadMoreButton = styled.button`

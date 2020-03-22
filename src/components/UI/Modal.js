@@ -21,6 +21,10 @@ const ModalWrapper = styled.div`
   z-index: 300;
   opacity: ${props => (props.showModal ? 1 : 0)};
   visibility: ${props => (props.showModal ? 'visible' : 'hidden')};
+  @media (max-width: 499px) {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const ModalCloseBtn = styled.button`
@@ -39,6 +43,12 @@ const ModalCloseBtn = styled.button`
   vertical-align: top;
   &:hover {
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.12);
+  }
+  @media (max-width: 499px) {
+    right: -25px;
+    right: 8px;
+    position: absolute;
+    z-index: 500;
   }
 `;
 

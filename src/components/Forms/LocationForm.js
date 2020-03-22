@@ -12,6 +12,9 @@ const propTypes = {
 const Form = styled.form`
   height: 50px;
   display: flex;
+  @media (max-width: 499px) {
+    justify-content: center;
+  }
 `;
 
 const Input = styled.input`
@@ -30,6 +33,9 @@ const Input = styled.input`
   &:focus {
     box-shadow: 0 1px 4px 4px rgba(0, 0, 0, 0.1);
     outline: 0;
+  }
+  @media (max-width: 499px) {
+    width: 100%;
   }
 `;
 

@@ -13,6 +13,10 @@ const PhotoWrapper = styled.div`
   width: 100%;
   background-color: #000;
   position: relative;
+  @media (max-width: 499px) {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const Image = styled.img`
@@ -20,6 +24,11 @@ const Image = styled.img`
   max-width: 80%;
   margin: 0 auto;
   display: ${props => (props.imageLoaded ? 'block' : 'none')};
+  @media (max-width: 499px) {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
 `;
 
 const Photo = ({ imageUrl }) => {

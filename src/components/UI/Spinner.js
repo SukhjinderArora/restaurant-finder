@@ -30,6 +30,11 @@ const Spinner = styled.div`
     width: 50px;
     height: 50px;
     border-width: 3px;
+    &::after {
+      width: 50px;
+      height: 50px;
+      border-width: 3px;
+    }
   }
 `;
 

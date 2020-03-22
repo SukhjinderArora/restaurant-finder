@@ -16,6 +16,9 @@ const propTypes = {
 const ReviewWrapper = styled.div`
   padding: 2.4rem;
   border-bottom: 1px solid #f0f0f0;
+  @media (max-width: 499px) {
+    padding: 2rem;
+  }
 `;
 
 const ReviewText = styled.p`

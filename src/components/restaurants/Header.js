@@ -21,19 +21,29 @@ const StyledHeader = styled.header`
   max-width: 1200px;
   margin: 0 auto;
   @media (max-width: 499px) {
-    display: none;
+    flex-direction: column;
+    padding-bottom: 1rem;
+    justify-content: center;
+    align-items: stretch;
   }
 `;
 
 const Heading = styled.h1`
   font-size: 2.5rem;
   color: #282c3f;
+  @media (max-width: 499px) {
+    font-size: 1.8rem;
+    font-weight: 400;
+    text-align: center;
+  }
 `;
 
 const NavList = styled.ul`
   display: flex;
+  justify-content: space-around;
   list-style: none;
   font-size: 1.6rem;
+  margin-top: 1rem;
 `;
 
 const ListItem = styled.li`

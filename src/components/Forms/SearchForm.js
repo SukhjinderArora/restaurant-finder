@@ -15,6 +15,9 @@ const Form = styled.form`
   width: 60rem;
   margin: 0 auto;
   position: relative;
+  @media (max-width: 499px) {
+    width: 95%;
+  }
 `;
 
 const Input = styled.input`

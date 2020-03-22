@@ -9,11 +9,18 @@ const propTypes = {
 
 const PhotosWrapper = styled.section`
   margin-top: 3rem;
+  @media (max-width: 499px) {
+    margin-top: 2rem;
+    padding: 0 1rem;
+  }
 `;
 
 const Header = styled.header`
   font-size: 3rem;
   font-weight: 400;
+  @media (max-width: 499px) {
+    font-size: 2.5rem;
+  }
 `;
 
 const Flex = styled.div`
@@ -42,7 +49,11 @@ const FlexItem = styled.div`
   cursor: pointer;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  @media (max-width: 499px) {
+    width: 10rem;
+  }
+`;
 
 const Photos = ({ photos, setModal }) => {
   return (

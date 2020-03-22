@@ -80,26 +80,24 @@ const Search = ({
   };
 
   return (
-    <div>
-      <FormContainer>
-        <SearchForm
-          input={inputText}
-          onInputChangeHandler={inputChangeHandler}
-          onFormSubmitHandler={formSubmitHandler}
-          clearInput={clearInput}
+    <FormContainer>
+      <SearchForm
+        input={inputText}
+        onInputChangeHandler={inputChangeHandler}
+        onFormSubmitHandler={formSubmitHandler}
+        clearInput={clearInput}
+      />
+      {showAutoComplete && restaurantsList.length > 0 ? (
+        <AutoComplete
+          list={restaurantsList}
+          type="restaurants"
+          onListItemClick={listItemClickHandler}
         />
-        {showAutoComplete && restaurantsList.length > 0 ? (
-          <AutoComplete
-            list={restaurantsList}
-            type="restaurants"
-            onListItemClick={listItemClickHandler}
-          />
-        ) : null}
-        {!userLocation.id && inputText && (
-          <InputError errorMessage="Please Select Your Location." />
-        )}
-      </FormContainer>
-    </div>
+      ) : null}
+      {!userLocation.id && inputText && (
+        <InputError errorMessage="Please Select Your Location." />
+      )}
+    </FormContainer>
   );
 };
 

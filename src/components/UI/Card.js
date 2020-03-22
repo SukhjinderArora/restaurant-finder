@@ -25,21 +25,38 @@ const CardContainer = styled.div`
     border-color: #d3d5df;
     box-shadow: 0 4px 7px 0 rgba(218, 220, 230, 0.6);
   }
+  @media (max-width: 499px) {
+    display: flex;
+    padding: 0;
+    margin: 1rem 2rem;
+    align-items: flex-start;
+  }
 `;
 
 const ImageContainer = styled.div`
   width: 22rem;
   overflow: hidden;
+  @media (max-width: 499px) {
+    width: auto;
+  }
 `;
 
 const Image = styled.img`
   height: 15rem;
   width: 100%;
+  @media (max-width: 499px) {
+    width: 5rem;
+    height: auto;
+  }
 `;
 
 const CardContent = styled.div`
   text-align: center;
   margin-top: 5px;
+  @media (max-width: 499px) {
+    margin-top: 0;
+    margin-left: 1rem;
+  }
 `;
 
 const Text = styled.p`
@@ -63,15 +80,24 @@ const FlexContainer = styled.div`
   justify-content: space-between;
   align-content: center;
   margin-top: 1.5rem;
+  @media (max-width: 499px) {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 5px;
+  }
 `;
 
 const Cost = styled(Text)`
   color: rgba(0, 0, 0, 0.9);
+  margin-top: 5px;
 `;
 
 const LocationText = styled(Text)`
   color: rgba(0, 0, 0, 0.9);
   margin-top: 1rem;
+  @media (max-width: 499px) {
+    display: none;
+  }
 `;
 
 const ViewButton = styled.button`
@@ -93,6 +119,9 @@ const ViewButton = styled.button`
   ${CardContainer}:hover & {
     opacity: 1;
     visibility: visible;
+  }
+  @media (max-width: 499px) {
+    display: none;
   }
 `;
 

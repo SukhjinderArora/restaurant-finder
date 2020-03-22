@@ -14,11 +14,18 @@ const propTypes = {
 
 const Wrapper = styled.section`
   margin-top: 3rem;
+  @media (max-width: 499px) {
+    padding: 0 1rem;
+    margin-top: 2rem;
+  }
 `;
 
 const Header = styled.h2`
   font-size: 3rem;
   font-weight: 400;
+  @media (max-width: 499px) {
+    font-size: 2.5rem;
+  }
 `;
 
 const RestaurantInfo = styled.div`
