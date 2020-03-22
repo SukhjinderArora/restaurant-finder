@@ -12,7 +12,6 @@ const GridContainer = styled.div`
   grid-auto-rows: minmax(20rem, auto);
   gap: 0 1rem;
   justify-items: center;
-  /* align-items: center; */
   padding-top: 2rem;
   max-width: 120rem;
   margin: 0 auto;

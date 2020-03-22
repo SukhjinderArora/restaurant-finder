@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Logo from '../UI/Logo';
-import NavigationItems from './NavigationItems/NavigationItems';
+import NavigationItems from './NavigationItems';
 
 const Navigation = styled.nav`
   position: fixed;

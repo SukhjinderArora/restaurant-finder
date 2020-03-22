@@ -2,37 +2,12 @@ import axios from 'axios';
 
 import { API_KEY, baseUrl } from '../../config';
 import {
-  GET_RESTAURANT_CATEGORIES_START,
-  GET_RESTAURANT_CATEGORIES,
-  GET_RESTAURANT_CATEGORIES_FAIL,
   GET_CUISINES_START,
   GET_CUISINES,
   GET_CUISINES_FAIL,
-  SET_CUISINES,
+  SET_SELECTED_CUISINES,
   CLEAR_SELECTED_CUISINES,
 } from './actionTypes';
-
-export const getRestaurantCategories = cityID => {
-  return async dispatch => {
-    try {
-      dispatch({ type: GET_RESTAURANT_CATEGORIES_START });
-      const response = await axios.get(`${baseUrl}/establishments`, {
-        params: {
-          city_id: cityID,
-        },
-        headers: {
-          'user-key': API_KEY,
-        },
-      });
-      dispatch({
-        type: GET_RESTAURANT_CATEGORIES,
-        categories: response.data.establishments,
-      });
-    } catch (e) {
-      dispatch({ type: GET_RESTAURANT_CATEGORIES_FAIL });
-    }
-  };
-};
 
 export const getCusines = cityID => {
   return async dispatch => {
@@ -55,7 +30,7 @@ export const getCusines = cityID => {
 
 export const setCuisines = cuisines => {
   return {
-    type: SET_CUISINES,
+    type: SET_SELECTED_CUISINES,
     selectedCuisines: cuisines,
   };
 };

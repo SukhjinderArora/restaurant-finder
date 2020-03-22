@@ -78,9 +78,14 @@ const AutoComplete = ({ list, type, onListItemClick, onListItemKeyDown }) => {
   } else if (type === 'restaurants') {
     listItems = list.map(listItem => (
       <ListItem
+        role="option"
+        tabIndex="0"
         key={listItem.restaurant.id}
         onClick={e =>
           onListItemClick(listItem.restaurant.id, listItem.restaurant.name, e)
+        }
+        onKeyDown={e =>
+          onListItemKeyDown(listItem.restaurant.id, listItem.restaurant.name, e)
         }
       >
         <ListItemText>{listItem.restaurant.name}</ListItemText>

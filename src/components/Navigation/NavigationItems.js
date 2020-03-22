@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
-import { ReactComponent as SearchIconSVG } from '../../../assets/images/svg/search-icon.svg';
-import { ReactComponent as LocationIconSVG } from '../../../assets/images/svg/location-icon.svg';
+import { ReactComponent as SearchIconSVG } from '../../assets/images/svg/search-icon.svg';
+import { ReactComponent as LocationIconSVG } from '../../assets/images/svg/location-icon.svg';
 
 const propTypes = {
   setSideDrawerOpen: PropTypes.func,

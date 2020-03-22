@@ -93,6 +93,7 @@ const Location = ({
       setInputText(name);
       setAutoCompleteVisibility(false);
       getUserLocation(id);
+      dispatch(clearSelectedCuisines());
       history.push('/restaurants');
     }
   }

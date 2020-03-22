@@ -79,6 +79,14 @@ const Search = ({
     history.push(`/restaurant/${name.replace(/\s/gi, '-')}/${id}`, { id });
   };
 
+  const listItemKeyPressHandler = (id, name, e) => {
+    if (e.keyCode === 13) {
+      setInputText(name);
+      setAutoCompleteVisibility(false);
+      history.push(`/restaurant/${name.replace(/\s/gi, '-')}/${id}`, { id });
+    }
+  };
+
   return (
     <FormContainer>
       <SearchForm
@@ -92,6 +100,7 @@ const Search = ({
           list={restaurantsList}
           type="restaurants"
           onListItemClick={listItemClickHandler}
+          onListItemKeyDown={listItemKeyPressHandler}
         />
       ) : null}
       {!userLocation.id && inputText && (
