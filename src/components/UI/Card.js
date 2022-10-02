@@ -1,18 +1,37 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import * as placeholderImage from '../../assets/images/placeholder_image.jpg';
 import RatingIcon from './RatingIcon';
 
-const propTypes = {
-  imageUrl: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  cuisines: PropTypes.string.isRequired,
-  rating: PropTypes.number.isRequired,
-  cost: PropTypes.string.isRequired,
-  location: PropTypes.string.isRequired,
-  viewRestaurantBtnHandler: PropTypes.func.isRequired,
+const Card = ({
+  imageUrl,
+  name,
+  cuisines,
+  rating,
+  cost,
+  location,
+  viewRestaurantBtnHandler,
+}) => {
+  return (
+    <CardContainer onClick={viewRestaurantBtnHandler}>
+      <ImageContainer>
+        <Image src={imageUrl || placeholderImage} alt="Restaurant Image" />
+      </ImageContainer>
+      <CardContent>
+        <Name>{name}</Name>
+        <Cuisines>{cuisines.split(', ').slice(0, 3).join(', ')}</Cuisines>
+        <FlexContainer>
+          <RatingIcon rating={rating} />
+          <Cost>{`${cost} FOR TWO`}</Cost>
+        </FlexContainer>
+        <LocationText>{location}</LocationText>
+        <ViewButton onClick={viewRestaurantBtnHandler}>
+          View Restaurant
+        </ViewButton>
+      </CardContent>
+    </CardContainer>
+  );
 };
 
 const CardContainer = styled.div`
@@ -127,41 +146,14 @@ const ViewButton = styled.button`
   }
 `;
 
-const Card = ({
-  imageUrl,
-  name,
-  cuisines,
-  rating,
-  cost,
-  location,
-  viewRestaurantBtnHandler,
-}) => {
-  return (
-    <CardContainer onClick={viewRestaurantBtnHandler}>
-      <ImageContainer>
-        <Image src={imageUrl || placeholderImage} alt="Restaurant Image" />
-      </ImageContainer>
-      <CardContent>
-        <Name>{name}</Name>
-        <Cuisines>
-          {cuisines
-            .split(', ')
-            .slice(0, 3)
-            .join(', ')}
-        </Cuisines>
-        <FlexContainer>
-          <RatingIcon rating={rating} />
-          <Cost>{`${cost} FOR TWO`}</Cost>
-        </FlexContainer>
-        <LocationText>{location}</LocationText>
-        <ViewButton onClick={viewRestaurantBtnHandler}>
-          View Restaurant
-        </ViewButton>
-      </CardContent>
-    </CardContainer>
-  );
+Card.propTypes = {
+  imageUrl: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  cuisines: PropTypes.string.isRequired,
+  rating: PropTypes.number.isRequired,
+  cost: PropTypes.string.isRequired,
+  location: PropTypes.string.isRequired,
+  viewRestaurantBtnHandler: PropTypes.func.isRequired,
 };
-
-Card.propTypes = propTypes;
 
 export default Card;

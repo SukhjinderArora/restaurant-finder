@@ -1,5 +1,13 @@
-import React from 'react';
 import styled from 'styled-components';
+
+const Footer = () => {
+  return (
+    <StyledFooter>
+      <CopyRightText>Designed and Developed by Sukhjinder Arora</CopyRightText>
+      <AttributionText>Powered By Zomato</AttributionText>
+    </StyledFooter>
+  );
+};
 
 const StyledFooter = styled.footer`
   display: flex;
@@ -28,14 +36,5 @@ const AttributionText = styled.p`
   font-size: 1.6rem;
   color: rgba(0, 0, 0, 0.8);
 `;
-
-const Footer = () => {
-  return (
-    <StyledFooter>
-      <CopyRightText>Designed and Developed by Sukhjinder Arora</CopyRightText>
-      <AttributionText>Powered By Zomato</AttributionText>
-    </StyledFooter>
-  );
-};
 
 export default Footer;

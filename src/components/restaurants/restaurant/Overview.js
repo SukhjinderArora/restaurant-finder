@@ -1,15 +1,52 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { ReactComponent as CheckMarkIcon } from '../../../assets/images/svg/checkmark.svg';
 
-const propTypes = {
-  address: PropTypes.string.isRequired,
-  phoneNumber: PropTypes.string.isRequired,
-  timings: PropTypes.string.isRequired,
-  highlights: PropTypes.arrayOf(PropTypes.string).isRequired,
-  averageCost: PropTypes.string.isRequired,
+const Overview = ({
+  address,
+  phoneNumber,
+  timings,
+  highlights,
+  averageCost,
+}) => {
+  return (
+    <Wrapper>
+      <Header>Overview</Header>
+      <RestaurantInfo>
+        <p>
+          <InfoTextBold>Timings: </InfoTextBold>
+          <InfoText>{timings}</InfoText>
+        </p>
+        <p>
+          <InfoTextBold>Average Cost for two: </InfoTextBold>
+          <InfoText>
+            {averageCost}
+            <span> (approx.)</span>
+          </InfoText>
+        </p>
+        <p>
+          <InfoTextBold>Phone Number: </InfoTextBold>
+          <InfoText>{phoneNumber}</InfoText>
+        </p>
+        <p>
+          <InfoTextBold>Address: </InfoTextBold>
+          <InfoText>{address}</InfoText>
+        </p>
+        <div>
+          <InfoTextBold>More info: </InfoTextBold>
+          <List>
+            {highlights.map((item) => (
+              <li key={item}>
+                <CheckMark />
+                <span>{item}</span>
+              </li>
+            ))}
+          </List>
+        </div>
+      </RestaurantInfo>
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.section`
@@ -55,52 +92,12 @@ const CheckMark = styled(CheckMarkIcon)`
   }
 `;
 
-const Overview = ({
-  address,
-  phoneNumber,
-  timings,
-  highlights,
-  averageCost,
-}) => {
-  return (
-    <Wrapper>
-      <Header>Overview</Header>
-      <RestaurantInfo>
-        <p>
-          <InfoTextBold>Timings: </InfoTextBold>
-          <InfoText>{timings}</InfoText>
-        </p>
-        <p>
-          <InfoTextBold>Average Cost for two: </InfoTextBold>
-          <InfoText>
-            {averageCost}
-            <span> (approx.)</span>
-          </InfoText>
-        </p>
-        <p>
-          <InfoTextBold>Phone Number: </InfoTextBold>
-          <InfoText>{phoneNumber}</InfoText>
-        </p>
-        <p>
-          <InfoTextBold>Address: </InfoTextBold>
-          <InfoText>{address}</InfoText>
-        </p>
-        <div>
-          <InfoTextBold>More info: </InfoTextBold>
-          <List>
-            {highlights.map(item => (
-              <li key={item}>
-                <CheckMark />
-                <span>{item}</span>
-              </li>
-            ))}
-          </List>
-        </div>
-      </RestaurantInfo>
-    </Wrapper>
-  );
+Overview.propTypes = {
+  address: PropTypes.string.isRequired,
+  phoneNumber: PropTypes.string.isRequired,
+  timings: PropTypes.string.isRequired,
+  highlights: PropTypes.arrayOf(PropTypes.string).isRequired,
+  averageCost: PropTypes.string.isRequired,
 };
-
-Overview.propTypes = propTypes;
 
 export default Overview;

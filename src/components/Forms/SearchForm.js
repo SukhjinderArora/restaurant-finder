@@ -1,14 +1,28 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { ReactComponent as SearchIconSVG } from '../../assets/images/svg/search-icon.svg';
 
-const propTypes = {
-  input: PropTypes.string.isRequired,
-  onInputChangeHandler: PropTypes.func.isRequired,
-  onFormSubmitHandler: PropTypes.func.isRequired,
-  clearInput: PropTypes.func.isRequired,
+const SearchForm = ({
+  input,
+  onInputChangeHandler,
+  onFormSubmitHandler,
+  clearInput,
+}) => {
+  return (
+    <Form onSubmit={onFormSubmitHandler}>
+      <Input
+        type="text"
+        placeholder="Search for a Restaurant"
+        value={input}
+        onChange={onInputChangeHandler}
+      />
+      {input && <InputClearButton onClick={clearInput}>clear</InputClearButton>}
+      <SearchButton type="submit">
+        <SearchIcon />
+      </SearchButton>
+    </Form>
+  );
 };
 
 const Form = styled.form`
@@ -72,28 +86,11 @@ const InputClearButton = styled.button`
   }
 `;
 
-const SearchForm = ({
-  input,
-  onInputChangeHandler,
-  onFormSubmitHandler,
-  clearInput,
-}) => {
-  return (
-    <Form onSubmit={onFormSubmitHandler}>
-      <Input
-        type="text"
-        placeholder="Search for a Restaurant"
-        value={input}
-        onChange={onInputChangeHandler}
-      />
-      {input && <InputClearButton onClick={clearInput}>clear</InputClearButton>}
-      <SearchButton type="submit">
-        <SearchIcon />
-      </SearchButton>
-    </Form>
-  );
+SearchForm.propTypes = {
+  input: PropTypes.string.isRequired,
+  onInputChangeHandler: PropTypes.func.isRequired,
+  onFormSubmitHandler: PropTypes.func.isRequired,
+  clearInput: PropTypes.func.isRequired,
 };
-
-SearchForm.propTypes = propTypes;
 
 export default SearchForm;

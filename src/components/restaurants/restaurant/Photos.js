@@ -1,10 +1,22 @@
-import React from 'react';
 import PropTypes, { object } from 'prop-types';
 import styled from 'styled-components';
 
-const propTypes = {
-  photos: PropTypes.arrayOf(object).isRequired,
-  setModal: PropTypes.func.isRequired,
+const Photos = ({ photos, setModal }) => {
+  return (
+    <PhotosWrapper>
+      <Header>Photos</Header>
+      <Flex>
+        {photos.map((photo) => (
+          <FlexItem
+            key={photo.photo.id}
+            onClick={() => setModal(true, photo.photo.url)}
+          >
+            <Image src={photo.photo.thumb_url} />
+          </FlexItem>
+        ))}
+      </Flex>
+    </PhotosWrapper>
+  );
 };
 
 const PhotosWrapper = styled.section`
@@ -55,23 +67,9 @@ const Image = styled.img`
   }
 `;
 
-const Photos = ({ photos, setModal }) => {
-  return (
-    <PhotosWrapper>
-      <Header>Photos</Header>
-      <Flex>
-        {photos.map(photo => (
-          <FlexItem
-            key={photo.photo.id}
-            onClick={() => setModal(true, photo.photo.url)}
-          >
-            <Image src={photo.photo.thumb_url} />
-          </FlexItem>
-        ))}
-      </Flex>
-    </PhotosWrapper>
-  );
+Photos.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  photos: PropTypes.arrayOf(object).isRequired,
+  setModal: PropTypes.func.isRequired,
 };
-
-Photos.propTypes = propTypes;
 export default Photos;

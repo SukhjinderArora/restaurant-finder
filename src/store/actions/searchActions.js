@@ -4,7 +4,7 @@ import { API_KEY, baseUrl } from '../../config';
 import { SEARCH_RESTAURANTS, CLEAR_SEARCH_RESULTS } from './actionTypes';
 
 export const searchForRestaurants = (searchQuery, cityID) => {
-  return async dispatch => {
+  return async (dispatch) => {
     const response = await axios.get(`${baseUrl}/search`, {
       params: {
         entity_id: cityID,

@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import SpinnerRect from '../../UI/SpinnerRect';
 
-const propTypes = {
-  imageUrl: PropTypes.string.isRequired,
+const Photo = ({ imageUrl }) => {
+  const [imageLoaded, setImageLoadState] = useState(false);
+  const onImageLoad = () => {
+    setImageLoadState(true);
+  };
+  return (
+    <PhotoWrapper>
+      <Image src={imageUrl} onLoad={onImageLoad} imageLoaded={imageLoaded} />
+      {!imageLoaded && <SpinnerRect />}
+    </PhotoWrapper>
+  );
 };
 
 const PhotoWrapper = styled.div`
@@ -23,7 +32,7 @@ const Image = styled.img`
   height: 100%;
   max-width: 80%;
   margin: 0 auto;
-  display: ${props => (props.imageLoaded ? 'block' : 'none')};
+  display: ${(props) => (props.imageLoaded ? 'block' : 'none')};
   @media (max-width: 499px) {
     width: 100%;
     max-width: 100%;
@@ -31,18 +40,5 @@ const Image = styled.img`
   }
 `;
 
-const Photo = ({ imageUrl }) => {
-  const [imageLoaded, setImageLoadState] = useState(false);
-  const onImageLoad = () => {
-    setImageLoadState(true);
-  };
-  return (
-    <PhotoWrapper>
-      <Image src={imageUrl} onLoad={onImageLoad} imageLoaded={imageLoaded} />
-      {!imageLoaded && <SpinnerRect />}
-    </PhotoWrapper>
-  );
-};
-
-Photo.propTypes = propTypes;
+Photo.propTypes = { imageUrl: PropTypes.string.isRequired };
 export default Photo;

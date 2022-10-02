@@ -9,8 +9,8 @@ import {
   CLEAR_SELECTED_CUISINES,
 } from './actionTypes';
 
-export const getCusines = cityID => {
-  return async dispatch => {
+export const getCusines = (cityID) => {
+  return async (dispatch) => {
     try {
       dispatch({ type: GET_CUISINES_START });
       const response = await axios.get(`${baseUrl}/cuisines`, {
@@ -28,7 +28,7 @@ export const getCusines = cityID => {
   };
 };
 
-export const setCuisines = cuisines => {
+export const setCuisines = (cuisines) => {
   return {
     type: SET_SELECTED_CUISINES,
     selectedCuisines: cuisines,

@@ -1,10 +1,13 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const propTypes = {
-  userName: PropTypes.string.isRequired,
-  reviewTime: PropTypes.string.isRequired,
+const UserInfo = ({ userName, reviewTime }) => {
+  return (
+    <UserInfoWrapper>
+      <UserName>{userName}</UserName>
+      <ReviewTime>{reviewTime}</ReviewTime>
+    </UserInfoWrapper>
+  );
 };
 
 const UserInfoWrapper = styled.div`
@@ -25,14 +28,8 @@ const ReviewTime = styled(Text)`
   margin-left: 1rem;
 `;
 
-const UserInfo = ({ userName, reviewTime }) => {
-  return (
-    <UserInfoWrapper>
-      <UserName>{userName}</UserName>
-      <ReviewTime>{reviewTime}</ReviewTime>
-    </UserInfoWrapper>
-  );
+UserInfo.propTypes = {
+  userName: PropTypes.string.isRequired,
+  reviewTime: PropTypes.string.isRequired,
 };
-
-UserInfo.propTypes = propTypes;
 export default UserInfo;

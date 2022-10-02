@@ -1,6 +1,18 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
+const PageNotFound = () => {
+  return (
+    <ErrorContainer>
+      <ErrorText>Page not found</ErrorText>
+      <ErrorDescription>
+        Uh-oh! Looks like the page you are trying to access, doesn&apos;t exist.
+        Please start afresh.
+      </ErrorDescription>
+      <HomeButton to="/">Go Home</HomeButton>
+    </ErrorContainer>
+  );
+};
 
 const ErrorContainer = styled.div`
   text-align: center;
@@ -41,18 +53,5 @@ const HomeButton = styled(Link)`
     border: 1px solid #fc8019;
   }
 `;
-
-const PageNotFound = () => {
-  return (
-    <ErrorContainer>
-      <ErrorText>Page not found</ErrorText>
-      <ErrorDescription>
-        Uh-oh! Looks like the page you are trying to access, doesn&apos;t exist.
-        Please start afresh.
-      </ErrorDescription>
-      <HomeButton to="/">Go Home</HomeButton>
-    </ErrorContainer>
-  );
-};
 
 export default PageNotFound;

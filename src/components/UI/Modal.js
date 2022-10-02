@@ -1,13 +1,18 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Backdrop from './Backdrop';
 
-const propTypes = {
-  showModal: PropTypes.bool.isRequired,
-  setModal: PropTypes.func.isRequired,
-  children: PropTypes.element.isRequired,
+const Modal = ({ showModal, setModal, children }) => {
+  return (
+    <>
+      <Backdrop showBackdrop={showModal} setBackdropVisible={setModal} />
+      <ModalWrapper showModal={showModal}>
+        <ModalCloseBtn onClick={() => setModal(false)}>✕</ModalCloseBtn>
+        {children}
+      </ModalWrapper>
+    </>
+  );
 };
 
 const ModalWrapper = styled.div`
@@ -19,8 +24,8 @@ const ModalWrapper = styled.div`
   background: #fff;
   transform: translate(-50%, -50%);
   z-index: 300;
-  opacity: ${props => (props.showModal ? 1 : 0)};
-  visibility: ${props => (props.showModal ? 'visible' : 'hidden')};
+  opacity: ${(props) => (props.showModal ? 1 : 0)};
+  visibility: ${(props) => (props.showModal ? 'visible' : 'hidden')};
   @media (max-width: 499px) {
     width: 100%;
     height: 100%;
@@ -52,17 +57,10 @@ const ModalCloseBtn = styled.button`
   }
 `;
 
-const Modal = ({ showModal, setModal, children }) => {
-  return (
-    <>
-      <Backdrop showBackdrop={showModal} setBackdropVisible={setModal} />
-      <ModalWrapper showModal={showModal}>
-        <ModalCloseBtn onClick={() => setModal(false)}>✕</ModalCloseBtn>
-        {children}
-      </ModalWrapper>
-    </>
-  );
+Modal.propTypes = {
+  showModal: PropTypes.bool.isRequired,
+  setModal: PropTypes.func.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
-Modal.propTypes = propTypes;
 export default Modal;

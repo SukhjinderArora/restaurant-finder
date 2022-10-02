@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -15,22 +15,15 @@ import Photos from './Photos';
 import Photo from './Photo';
 import Reviews from './reviews/Reviews';
 
-const Wrapper = styled.div`
-  max-width: 120rem;
-  margin: 0 auto;
-  margin-top: 5rem;
-  @media (max-width: 499px) {
-    margin-top: 1rem;
-  }
-`;
-
 const Restaurant = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { loading, error, restaurant } = useSelector(
-    state => state.restaurants
+    (state) => state.restaurants
   );
-  const { reviews, totalReviews, offset } = useSelector(state => state.reviews);
+  const { reviews, totalReviews, offset } = useSelector(
+    (state) => state.reviews
+  );
   const hasMoreReviews = totalReviews > 10 && offset <= 10;
   const {
     name,
@@ -56,7 +49,7 @@ const Restaurant = () => {
     dispatch(getReviews(id));
   }, [id, dispatch]);
 
-  const loadMoreReviewsHandler = e => {
+  const loadMoreReviewsHandler = (e) => {
     e.preventDefault();
     if (hasMoreReviews) {
       dispatch(getReviews(id));
@@ -106,5 +99,14 @@ const Restaurant = () => {
     </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  max-width: 120rem;
+  margin: 0 auto;
+  margin-top: 5rem;
+  @media (max-width: 499px) {
+    margin-top: 1rem;
+  }
+`;
 
 export default Restaurant;

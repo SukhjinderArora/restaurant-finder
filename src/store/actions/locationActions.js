@@ -11,8 +11,8 @@ import {
 
 import { saveState } from '../../localStorage';
 
-export const getListOfCities = searchQuery => {
-  return async dispatch => {
+export const getListOfCities = (searchQuery) => {
+  return async (dispatch) => {
     const response = await axios.get(`${baseUrl}/cities`, {
       params: {
         q: searchQuery,
@@ -46,14 +46,14 @@ const setLocationFail = () => {
   };
 };
 
-export const setLocation = location => {
+export const setLocation = (location) => {
   return {
     type: SET_USER_LOCATION,
     location,
   };
 };
 
-export const getUserLocation = id => {
+export const getUserLocation = (id) => {
   return async (dispatch, getState) => {
     try {
       dispatch(setLocationStart());

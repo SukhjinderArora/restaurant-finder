@@ -13,6 +13,7 @@ const initialState = {
   error: false,
 };
 
+// eslint-disable-next-line default-param-last
 const reviewsReducer = (state = initialState, action) => {
   switch (action.type) {
     case CLEAR_REVIEWS:

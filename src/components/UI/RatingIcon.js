@@ -1,11 +1,15 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { ReactComponent as starIconSVG } from '../../assets/images/svg/star.svg';
 
-const propTypes = {
-  rating: PropTypes.number.isRequired,
+const RatingIcon = ({ rating }) => {
+  return (
+    <RatingIconWrapper rating={rating}>
+      <RatingText>{rating}</RatingText>
+      <RatingIconSVG />
+    </RatingIconWrapper>
+  );
 };
 
 const RatingIconWrapper = styled.div`
@@ -14,7 +18,7 @@ const RatingIconWrapper = styled.div`
   align-items: center;
   border-radius: 3px;
   justify-content: space-between;
-  background-color: ${props => (props.rating < 3 ? '#ff9f00' : '#388e3c')};
+  background-color: ${(props) => (props.rating < 3 ? '#ff9f00' : '#388e3c')};
 `;
 
 const RatingIconSVG = styled(starIconSVG)`
@@ -31,15 +35,8 @@ const RatingText = styled.span`
   font-size: 1.2rem;
 `;
 
-const RatingIcon = ({ rating }) => {
-  return (
-    <RatingIconWrapper rating={rating}>
-      <RatingText>{rating}</RatingText>
-      <RatingIconSVG />
-    </RatingIconWrapper>
-  );
+RatingIcon.propTypes = {
+  rating: PropTypes.number.isRequired,
 };
-
-RatingIcon.propTypes = propTypes;
 
 export default RatingIcon;

@@ -13,6 +13,7 @@ const initialState = {
   locationError: false,
 };
 
+// eslint-disable-next-line default-param-last
 const locationReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_LIST_OF_CITIES:

@@ -1,5 +1,4 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import Layout from './components/Layout';
 import Home from './components/Home';
@@ -12,16 +11,16 @@ import PageNotFound from './components/PageNotFound';
 const App = () => {
   return (
     <div className="App">
-      <Layout>
-        <Switch>
-          <Route path="/search" exact component={Search} />
-          <Route path="/location" exact component={Location} />
-          <Route path="/restaurants" exact component={Restaurants} />
-          <Route path="/restaurant/:name/:id" exact component={Restaurant} />
-          <Route path="/" exact component={Home} />
-          <Route component={PageNotFound} />
-        </Switch>
-      </Layout>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="search" element={<Search />} />
+          <Route path="location" element={<Location />} />
+          <Route path="restaurants" element={<Restaurants />} />
+          <Route path="restaurant/:name/:id" element={<Restaurant />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Route>
+      </Routes>
     </div>
   );
 };

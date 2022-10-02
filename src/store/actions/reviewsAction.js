@@ -16,7 +16,7 @@ const getReviewsError = () => {
   return { type: GET_REVIEWS_ERROR };
 };
 
-export const getReviews = resId => {
+export const getReviews = (resId) => {
   return async (dispatch, getState) => {
     if (getState().reviews.loading) return;
     dispatch(getReviewsStart());

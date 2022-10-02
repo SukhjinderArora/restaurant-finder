@@ -1,5 +1,6 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import debounce from 'lodash.debounce';
@@ -14,38 +15,18 @@ import { clearSelectedCuisines } from '../store/actions/filtersAction';
 
 import backgroundImage from '../assets/images/svg/background.svg';
 
-const propTypes = {
-  cities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  getListOfCities: PropTypes.func.isRequired,
-  clearListOfCities: PropTypes.func.isRequired,
-  getUserLocation: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
-};
-
-const HeroImage = styled.div`
-  background-image: url(${backgroundImage});
-  height: 75vh;
-  width: 100%;
-  position: relative;
-  background-position: 0;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: 40%;
-`;
-
 const Location = ({
   cities,
   getListOfCities,
   clearListOfCities,
   getUserLocation,
-  history,
 }) => {
   const [inputText, setInputText] = useState('');
   const [inputError, setInputError] = useState(false);
   const [showAutoComplete, setAutoCompleteVisibility] = useState(false);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getListOfCitiesDebounced = useCallback(
     debounce(getListOfCities, 200),
     []
@@ -61,42 +42,54 @@ const Location = ({
     }
   }, [inputText, getListOfCitiesDebounced, clearListOfCities]);
 
-  function handleChange(e) {
-    setInputText(e.target.value);
-    if (inputError) setInputError(false);
-  }
+  const handleChange = useCallback(
+    (e) => {
+      setInputText(e.target.value);
+      if (inputError) setInputError(false);
+    },
+    [inputError]
+  );
 
-  function formSubmitHandler(e) {
+  const formSubmitHandler = useCallback((e) => {
     e.preventDefault();
     setInputError(true);
     setAutoCompleteVisibility(false);
-  }
+  }, []);
 
-  function clearInput(e) {
-    e.preventDefault();
-    setInputText('');
-    setAutoCompleteVisibility(false);
-    clearListOfCities();
-    if (inputError) setInputError(false);
-  }
+  const clearInput = useCallback(
+    (e) => {
+      e.preventDefault();
+      setInputText('');
+      setAutoCompleteVisibility(false);
+      clearListOfCities();
+      if (inputError) setInputError(false);
+    },
+    [clearListOfCities, inputError]
+  );
 
-  function listItemClickHandler(id, name) {
-    setInputText(name);
-    setAutoCompleteVisibility(false);
-    getUserLocation(id);
-    dispatch(clearSelectedCuisines());
-    history.push('/restaurants');
-  }
-
-  function listItemKeyPressHandler(id, name, e) {
-    if (e.keyCode === 13) {
+  const listItemClickHandler = useCallback(
+    (id, name) => {
       setInputText(name);
       setAutoCompleteVisibility(false);
       getUserLocation(id);
       dispatch(clearSelectedCuisines());
-      history.push('/restaurants');
-    }
-  }
+      navigate('/restaurants');
+    },
+    [dispatch, navigate, getUserLocation]
+  );
+
+  const listItemKeyPressHandler = useCallback(
+    (id, name, e) => {
+      if (e.keyCode === 13) {
+        setInputText(name);
+        setAutoCompleteVisibility(false);
+        getUserLocation(id);
+        dispatch(clearSelectedCuisines());
+        navigate('/restaurants');
+      }
+    },
+    [dispatch, navigate, getUserLocation]
+  );
 
   return (
     <HeroImage>
@@ -123,20 +116,37 @@ const Location = ({
   );
 };
 
-const mapStateToProps = state => {
+const HeroImage = styled.div`
+  background-image: url(${backgroundImage});
+  height: 75vh;
+  width: 100%;
+  position: relative;
+  background-position: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 40%;
+`;
+
+const mapStateToProps = (state) => {
   return {
     cities: state.location.cities,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getListOfCities: cityName => dispatch(location.getListOfCities(cityName)),
+    getListOfCities: (cityName) => dispatch(location.getListOfCities(cityName)),
     clearListOfCities: () => dispatch(location.clearCitiesList()),
-    getUserLocation: id => dispatch(location.getUserLocation(id)),
+    getUserLocation: (id) => dispatch(location.getUserLocation(id)),
   };
 };
 
-Location.propTypes = propTypes;
+Location.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  cities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  getListOfCities: PropTypes.func.isRequired,
+  clearListOfCities: PropTypes.func.isRequired,
+  getUserLocation: PropTypes.func.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Location);

@@ -48,8 +48,8 @@ export const clearRestaurants = () => {
   return { type: CLEAR_RESTAURANTS };
 };
 
-export const getRestaurant = id => {
-  return async dispatch => {
+export const getRestaurant = (id) => {
+  return async (dispatch) => {
     try {
       dispatch({ type: GET_RESTAURANT_START });
       const response = await axios.get(`${baseUrl}/restaurant`, {

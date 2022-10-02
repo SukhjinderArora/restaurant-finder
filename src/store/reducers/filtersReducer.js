@@ -10,6 +10,7 @@ const initialState = {
   selectedCuisines: '',
 };
 
+// eslint-disable-next-line default-param-last
 const filtersReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_CUISINES:

@@ -1,5 +1,16 @@
-import React from 'react';
 import styled, { keyframes } from 'styled-components';
+
+const SpinnerRect = () => {
+  return (
+    <Spinner>
+      <Rect1 />
+      <Rect2 />
+      <Rect3 />
+      <Rect4 />
+      <Rect5 />
+    </Spinner>
+  );
+};
 
 const stretchdelay = keyframes`
   0%, 40%, 100% { 
@@ -52,17 +63,5 @@ const Rect5 = styled(Rect)`
   -webkit-animation-delay: -0.8s;
   animation-delay: -0.8s;
 `;
-
-const SpinnerRect = () => {
-  return (
-    <Spinner>
-      <Rect1 />
-      <Rect2 />
-      <Rect3 />
-      <Rect4 />
-      <Rect5 />
-    </Spinner>
-  );
-};
 
 export default SpinnerRect;

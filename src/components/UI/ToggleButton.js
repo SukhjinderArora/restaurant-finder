@@ -1,9 +1,14 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const propTypes = {
-  onClickHandler: PropTypes.func.isRequired,
+const ToggleButton = ({ onClickHandler }) => {
+  return (
+    <StyledToggleButton onClick={onClickHandler}>
+      <span />
+      <span />
+      <span />
+    </StyledToggleButton>
+  );
 };
 
 const StyledToggleButton = styled.button`
@@ -23,16 +28,8 @@ const StyledToggleButton = styled.button`
   }
 `;
 
-const ToggleButton = ({ onClickHandler }) => {
-  return (
-    <StyledToggleButton onClick={onClickHandler}>
-      <span />
-      <span />
-      <span />
-    </StyledToggleButton>
-  );
+ToggleButton.propTypes = {
+  onClickHandler: PropTypes.func.isRequired,
 };
-
-ToggleButton.propTypes = propTypes;
 
 export default ToggleButton;

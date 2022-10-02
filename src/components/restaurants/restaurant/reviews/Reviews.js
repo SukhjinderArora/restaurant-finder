@@ -1,13 +1,31 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Review from './review/Review';
 
-const propTypes = {
-  reviews: PropTypes.arrayOf(PropTypes.object).isRequired,
-  loadMoreReviewsHandler: PropTypes.func.isRequired,
-  hasMore: PropTypes.bool.isRequired,
+const Reviews = ({ reviews, loadMoreReviewsHandler, hasMore }) => {
+  return (
+    <Wrapper>
+      <Header>Reviews</Header>
+      <ReviewsContainer>
+        {reviews.map((review) => (
+          <Review
+            rating={review.review.rating}
+            ratingText={review.review.rating_text}
+            review={review.review.review_text}
+            reviewTime={review.review.review_time_friendly}
+            userName={review.review.user.name}
+            key={review.review.id}
+          />
+        ))}
+      </ReviewsContainer>
+      {hasMore && (
+        <LoadMoreButton onClick={loadMoreReviewsHandler}>
+          Load More Reviews
+        </LoadMoreButton>
+      )}
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.section`
@@ -54,30 +72,10 @@ const LoadMoreButton = styled.button`
   }
 `;
 
-const Reviews = ({ reviews, loadMoreReviewsHandler, hasMore }) => {
-  return (
-    <Wrapper>
-      <Header>Reviews</Header>
-      <ReviewsContainer>
-        {reviews.map(review => (
-          <Review
-            rating={review.review.rating}
-            ratingText={review.review.rating_text}
-            review={review.review.review_text}
-            reviewTime={review.review.review_time_friendly}
-            userName={review.review.user.name}
-            key={review.review.id}
-          />
-        ))}
-      </ReviewsContainer>
-      {hasMore && (
-        <LoadMoreButton onClick={loadMoreReviewsHandler}>
-          Load More Reviews
-        </LoadMoreButton>
-      )}
-    </Wrapper>
-  );
+Reviews.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  reviews: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loadMoreReviewsHandler: PropTypes.func.isRequired,
+  hasMore: PropTypes.bool.isRequired,
 };
-
-Reviews.propTypes = propTypes;
 export default Reviews;

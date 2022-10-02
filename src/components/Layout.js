@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 
 import Toolbar from './Navigation/Toolbar';
 import Navbar from './Navigation/Navbar';
@@ -7,13 +7,9 @@ import Footer from './Navigation/Footer';
 import SideDrawer from './Navigation/SideDrawer';
 import NavigationItems from './Navigation/NavigationItems';
 
-const propTypes = {
-  children: PropTypes.element.isRequired,
-};
-
-const Layout = ({ children }) => {
+const Layout = () => {
   const [sideDrawerOpen, setSideDrawer] = useState(false);
-  const sideDrawerHandler = open => {
+  const sideDrawerHandler = (open) => {
     setSideDrawer(open);
   };
 
@@ -30,12 +26,10 @@ const Layout = ({ children }) => {
           <NavigationItems setSideDrawerOpen={sideDrawerHandler} />
         </nav>
       </SideDrawer>
-      {children}
+      <Outlet />
       <Footer />
     </>
   );
 };
-
-Layout.propTypes = propTypes;
 
 export default Layout;

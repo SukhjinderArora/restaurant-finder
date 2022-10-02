@@ -1,8 +1,19 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { ReactComponent as SearchIconSVG } from '../../assets/images/svg/search.svg';
+
+const SearchButton = () => {
+  const navigate = useNavigate();
+  const searchButtonHandler = () => {
+    navigate('/search');
+  };
+  return (
+    <StyledSearchButton onClick={searchButtonHandler}>
+      <SearchIcon />
+    </StyledSearchButton>
+  );
+};
 
 const StyledSearchButton = styled.button`
   background-color: #fff;
@@ -15,17 +26,5 @@ const SearchIcon = styled(SearchIconSVG)`
   height: 1.8rem;
   fill: #fc8019;
 `;
-
-const SearchButton = () => {
-  const history = useHistory();
-  const searchButtonHandler = () => {
-    history.push('/search');
-  };
-  return (
-    <StyledSearchButton onClick={searchButtonHandler}>
-      <SearchIcon />
-    </StyledSearchButton>
-  );
-};
 
 export default SearchButton;

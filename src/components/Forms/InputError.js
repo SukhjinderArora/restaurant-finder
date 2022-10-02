@@ -1,9 +1,12 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const propTypes = {
-  errorMessage: PropTypes.string.isRequired,
+const InputError = ({ errorMessage }) => {
+  return (
+    <ErrorBox>
+      <ErrorText>{errorMessage}</ErrorText>
+    </ErrorBox>
+  );
 };
 
 const ErrorBox = styled.div`
@@ -21,14 +24,6 @@ const ErrorText = styled.p`
   font-weight: 700;
 `;
 
-const InputError = ({ errorMessage }) => {
-  return (
-    <ErrorBox>
-      <ErrorText>{errorMessage}</ErrorText>
-    </ErrorBox>
-  );
-};
-
-InputError.propTypes = propTypes;
+InputError.propTypes = { errorMessage: PropTypes.string.isRequired };
 
 export default InputError;

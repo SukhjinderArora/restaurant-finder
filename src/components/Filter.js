@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes, { object } from 'prop-types';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,9 +9,83 @@ import { ReactComponent as CloseIconSVG } from '../assets/images/svg/close.svg';
 
 import CustomCheckBox from './UI/CustomCheckBox';
 
-const propTypes = {
-  cuisines: PropTypes.arrayOf(object).isRequired,
-  setSideDrawerOpen: PropTypes.func.isRequired,
+const Filter = ({ cuisines, setSideDrawerOpen }) => {
+  const [selectedCuisines, setSelectedCuisines] = useState({});
+  const dispatch = useDispatch();
+  const selectedCuisinesStr = useSelector(
+    (state) => state.filter.selectedCuisines
+  );
+
+  useEffect(() => {
+    const selectedCuisinesArray = selectedCuisinesStr.split(',');
+    const selectedCuisinesObj = {};
+    selectedCuisinesArray.forEach((cuisineId) => {
+      selectedCuisinesObj[cuisineId] = cuisineId;
+    });
+    setSelectedCuisines(selectedCuisinesObj);
+  }, [selectedCuisinesStr]);
+
+  const onCheckBoxChangeHandler = (id, value, e) => {
+    if (e.target.checked) {
+      const newState = {
+        ...selectedCuisines,
+        [id]: value,
+      };
+      setSelectedCuisines(newState);
+    } else {
+      const newState = { ...selectedCuisines };
+      delete newState[id];
+      setSelectedCuisines(newState);
+    }
+  };
+
+  const clearButtonHandler = (e) => {
+    e.preventDefault();
+    setSelectedCuisines({});
+  };
+
+  const submitButtonHandler = (e) => {
+    e.preventDefault();
+    const cuisineString = Object.keys(selectedCuisines).reduce(
+      (acc, cur) => `${acc},${cur}`,
+      ''
+    );
+    dispatch(filtersAction.setCuisines(cuisineString));
+    setSideDrawerOpen(false);
+  };
+
+  const filterList = cuisines.map((cuisine) => (
+    <FilterItem key={cuisine.cuisine.cuisine_id}>
+      <CustomCheckBox
+        id={cuisine.cuisine.cuisine_id}
+        key={cuisine.cuisine.cuisine_id}
+        name="cuisine"
+        value={cuisine.cuisine.cuisine_name}
+        selected={!!selectedCuisines[cuisine.cuisine.cuisine_id]}
+        checkBoxChangeHandler={onCheckBoxChangeHandler}
+      />
+    </FilterItem>
+  ));
+  return (
+    <Wrapper>
+      <Header>
+        <CloseButton onClick={() => setSideDrawerOpen(false)}>
+          <CloseIcon />
+        </CloseButton>
+        <HeaderText>Filters</HeaderText>
+      </Header>
+      <FilterContainer>
+        <FilterType>Cuisines</FilterType>
+        <FilterList>{filterList}</FilterList>
+        <ButtonsContainer>
+          <ClearButton onClick={clearButtonHandler}>Clear</ClearButton>
+          <SubmitButton onClick={submitButtonHandler}>
+            Show Restaurants
+          </SubmitButton>
+        </ButtonsContainer>
+      </FilterContainer>
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.div`
@@ -141,85 +215,10 @@ const SubmitButton = styled(Button)`
   }
 `;
 
-const Filter = ({ cuisines, setSideDrawerOpen }) => {
-  const [selectedCuisines, setSelectedCuisines] = useState({});
-  const dispatch = useDispatch();
-  const selectedCuisinesStr = useSelector(
-    state => state.filter.selectedCuisines
-  );
-
-  useEffect(() => {
-    const selectedCuisinesArray = selectedCuisinesStr.split(',');
-    const selectedCuisinesObj = {};
-    selectedCuisinesArray.forEach(cuisineId => {
-      selectedCuisinesObj[cuisineId] = cuisineId;
-    });
-    setSelectedCuisines(selectedCuisinesObj);
-  }, [selectedCuisinesStr]);
-
-  const onCheckBoxChangeHandler = (id, value, e) => {
-    if (e.target.checked) {
-      const newState = {
-        ...selectedCuisines,
-        [id]: value,
-      };
-      setSelectedCuisines(newState);
-    } else {
-      const newState = { ...selectedCuisines };
-      delete newState[id];
-      setSelectedCuisines(newState);
-    }
-  };
-
-  const clearButtonHandler = e => {
-    e.preventDefault();
-    setSelectedCuisines({});
-  };
-
-  const submitButtonHandler = e => {
-    e.preventDefault();
-    const cuisineString = Object.keys(selectedCuisines).reduce(
-      (acc, cur) => `${acc},${cur}`,
-      ''
-    );
-    dispatch(filtersAction.setCuisines(cuisineString));
-    setSideDrawerOpen(false);
-  };
-
-  const filterList = cuisines.map(cuisine => (
-    <FilterItem key={cuisine.cuisine.cuisine_id}>
-      <CustomCheckBox
-        id={cuisine.cuisine.cuisine_id}
-        key={cuisine.cuisine.cuisine_id}
-        name="cuisine"
-        value={cuisine.cuisine.cuisine_name}
-        selected={!!selectedCuisines[cuisine.cuisine.cuisine_id]}
-        checkBoxChangeHandler={onCheckBoxChangeHandler}
-      />
-    </FilterItem>
-  ));
-  return (
-    <Wrapper>
-      <Header>
-        <CloseButton onClick={() => setSideDrawerOpen(false)}>
-          <CloseIcon />
-        </CloseButton>
-        <HeaderText>Filters</HeaderText>
-      </Header>
-      <FilterContainer>
-        <FilterType>Cuisines</FilterType>
-        <FilterList>{filterList}</FilterList>
-        <ButtonsContainer>
-          <ClearButton onClick={clearButtonHandler}>Clear</ClearButton>
-          <SubmitButton onClick={submitButtonHandler}>
-            Show Restaurants
-          </SubmitButton>
-        </ButtonsContainer>
-      </FilterContainer>
-    </Wrapper>
-  );
+Filter.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  cuisines: PropTypes.arrayOf(object).isRequired,
+  setSideDrawerOpen: PropTypes.func.isRequired,
 };
-
-Filter.propTypes = propTypes;
 
 export default Filter;

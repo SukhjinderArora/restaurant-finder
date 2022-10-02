@@ -1,16 +1,40 @@
-import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import * as placeholderImage from '../../../assets/images/placeholder_image.jpg';
 
-const propTypes = {
-  imageUrl: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  rating: PropTypes.string.isRequired,
-  location: PropTypes.string.isRequired,
-  categories: PropTypes.string.isRequired,
-  cuisines: PropTypes.string.isRequired,
+const RestaurantHeader = ({
+  imageUrl,
+  title,
+  rating,
+  location,
+  categories,
+  cuisines,
+}) => {
+  return (
+    <Header>
+      <ImageContainer>
+        <Image
+          src={imageUrl || placeholderImage}
+          alt="restaurant featured image"
+        />
+      </ImageContainer>
+      <Wrapper>
+        <TitleWrapper>
+          <Title>{title}</Title>
+          <Ratings rating={rating}>
+            {rating}
+            /5
+          </Ratings>
+        </TitleWrapper>
+        <div>
+          <Text>{categories}</Text>
+          <RedText>{cuisines}</RedText>
+          <Text>{location}</Text>
+        </div>
+      </Wrapper>
+    </Header>
+  );
 };
 
 const Header = styled.header`
@@ -61,7 +85,7 @@ const Ratings = styled.h2`
   display: inline-block;
   font-size: 2.5rem;
   color: #fff;
-  background-color: ${props => (props.rating < 3 ? '#ff9f00' : '#388e3c')};
+  background-color: ${(props) => (props.rating < 3 ? '#ff9f00' : '#388e3c')};
   padding: 1rem;
   margin: 1rem 0;
   @media (max-width: 499px) {
@@ -80,40 +104,13 @@ const RedText = styled(Text)`
   color: #cb202d;
 `;
 
-const RestaurantHeader = ({
-  imageUrl,
-  title,
-  rating,
-  location,
-  categories,
-  cuisines,
-}) => {
-  return (
-    <Header>
-      <ImageContainer>
-        <Image
-          src={imageUrl || placeholderImage}
-          alt="restaurant featured image"
-        />
-      </ImageContainer>
-      <Wrapper>
-        <TitleWrapper>
-          <Title>{title}</Title>
-          <Ratings rating={rating}>
-            {rating}
-            /5
-          </Ratings>
-        </TitleWrapper>
-        <div>
-          <Text>{categories}</Text>
-          <RedText>{cuisines}</RedText>
-          <Text>{location}</Text>
-        </div>
-      </Wrapper>
-    </Header>
-  );
+RestaurantHeader.propTypes = {
+  imageUrl: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  location: PropTypes.string.isRequired,
+  categories: PropTypes.string.isRequired,
+  cuisines: PropTypes.string.isRequired,
 };
-
-RestaurantHeader.propTypes = propTypes;
 
 export default RestaurantHeader;

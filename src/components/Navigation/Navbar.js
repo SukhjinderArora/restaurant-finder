@@ -1,8 +1,16 @@
-import React from 'react';
 import styled from 'styled-components';
 
 import Logo from '../UI/Logo';
 import NavigationItems from './NavigationItems';
+
+const Navbar = () => {
+  return (
+    <Navigation>
+      <Logo to="/">Restaurant Finder</Logo>
+      <NavigationItems />
+    </Navigation>
+  );
+};
 
 const Navigation = styled.nav`
   position: fixed;
@@ -22,14 +30,5 @@ const Navigation = styled.nav`
     display: none;
   }
 `;
-
-const Navbar = () => {
-  return (
-    <Navigation>
-      <Logo to="/">Restaurant Finder</Logo>
-      <NavigationItems />
-    </Navigation>
-  );
-};
 
 export default Navbar;

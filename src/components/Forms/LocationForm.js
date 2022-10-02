@@ -1,12 +1,30 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const propTypes = {
-  text: PropTypes.string.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  clearInput: PropTypes.func.isRequired,
-  formSubmitHandler: PropTypes.func.isRequired,
+const LocationForm = ({
+  text,
+  handleChange,
+  clearInput,
+  formSubmitHandler,
+}) => {
+  return (
+    <Form autoComplete="off" action="" onSubmit={formSubmitHandler}>
+      <div style={{ position: 'relative' }}>
+        <Input
+          type="text"
+          value={text}
+          onChange={handleChange}
+          placeholder="Enter your city to set location"
+          autoComplete="off"
+          spellCheck="false"
+        />
+        {text && (
+          <InputClearButton onClick={clearInput}>clear</InputClearButton>
+        )}
+      </div>
+      <SubmitButton type="submit">Find Food</SubmitButton>
+    </Form>
+  );
 };
 
 const Form = styled.form`
@@ -83,30 +101,11 @@ const InputClearButton = styled.button`
   }
 `;
 
-const LocationForm = ({
-  text,
-  handleChange,
-  clearInput,
-  formSubmitHandler,
-}) => {
-  return (
-    <Form autoComplete="off" action="" onSubmit={formSubmitHandler}>
-      <div style={{ position: 'relative' }}>
-        <Input
-          type="text"
-          value={text}
-          onChange={handleChange}
-          placeholder="Enter your city to set location"
-        />
-        {text && (
-          <InputClearButton onClick={clearInput}>clear</InputClearButton>
-        )}
-      </div>
-      <SubmitButton type="submit">Find Food</SubmitButton>
-    </Form>
-  );
+LocationForm.propTypes = {
+  text: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  clearInput: PropTypes.func.isRequired,
+  formSubmitHandler: PropTypes.func.isRequired,
 };
-
-LocationForm.propTypes = propTypes;
 
 export default LocationForm;

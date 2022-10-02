@@ -1,16 +1,40 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Rating from './Rating';
 import UserInfo from './UserInfo';
 
-const propTypes = {
-  review: PropTypes.string.isRequired,
-  rating: PropTypes.number.isRequired,
-  ratingText: PropTypes.string.isRequired,
-  userName: PropTypes.string.isRequired,
-  reviewTime: PropTypes.string.isRequired,
+const Review = ({ rating, ratingText, review, reviewTime, userName }) => {
+  const [showFullReview, setFullReview] = useState(false);
+
+  const onReadMoreClickHandler = (e) => {
+    e.preventDefault();
+    setFullReview(true);
+  };
+
+  const longReview = review.replace(/\s\s/gi, '\n');
+  const shortReview = `${review.substring(0, 499)}...`.replace(/\s\s/gi, '\n');
+  let reviewParagraph;
+  if (review.length > 499) {
+    reviewParagraph = (
+      <ReviewText>
+        <span>{showFullReview ? longReview : shortReview}</span>
+        {!showFullReview && (
+          <ReadMore onClick={onReadMoreClickHandler}>Read More</ReadMore>
+        )}
+      </ReviewText>
+    );
+  } else {
+    reviewParagraph = <ReviewText>{longReview}</ReviewText>;
+  }
+  return (
+    <ReviewWrapper>
+      <Rating rating={rating} ratingText={ratingText} />
+      {reviewParagraph}
+      <UserInfo userName={userName} reviewTime={reviewTime} />
+    </ReviewWrapper>
+  );
 };
 
 const ReviewWrapper = styled.div`
@@ -41,38 +65,12 @@ const ReadMore = styled.span`
   }
 `;
 
-const Review = ({ rating, ratingText, review, reviewTime, userName }) => {
-  const [showFullReview, setFullReview] = useState(false);
-
-  const onReadMoreClickHandler = e => {
-    e.preventDefault();
-    setFullReview(true);
-  };
-
-  const longReview = review.replace(/\s\s/gi, '\n');
-  const shortReview = `${review.substring(0, 499)}...`.replace(/\s\s/gi, '\n');
-  let reviewParagraph;
-  if (review.length > 499) {
-    reviewParagraph = (
-      <ReviewText>
-        <span>{showFullReview ? longReview : shortReview}</span>
-        {!showFullReview && (
-          <ReadMore onClick={onReadMoreClickHandler}>Read More</ReadMore>
-        )}
-      </ReviewText>
-    );
-  } else {
-    reviewParagraph = <ReviewText>{longReview}</ReviewText>;
-  }
-  return (
-    <ReviewWrapper>
-      <Rating rating={rating} ratingText={ratingText} />
-      {reviewParagraph}
-      <UserInfo userName={userName} reviewTime={reviewTime} />
-    </ReviewWrapper>
-  );
+Review.propTypes = {
+  review: PropTypes.string.isRequired,
+  rating: PropTypes.number.isRequired,
+  ratingText: PropTypes.string.isRequired,
+  userName: PropTypes.string.isRequired,
+  reviewTime: PropTypes.string.isRequired,
 };
-
-Review.propTypes = propTypes;
 
 export default Review;

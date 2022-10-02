@@ -7,6 +7,7 @@ const initialState = {
   restaurantsData: {},
 };
 
+// eslint-disable-next-line default-param-last
 const searchReducer = (state = initialState, action) => {
   switch (action.type) {
     case SEARCH_RESTAURANTS:

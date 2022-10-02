@@ -1,9 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const propTypes = {
-  children: PropTypes.element.isRequired,
+const Grid = ({ children }) => {
+  return <GridContainer>{children}</GridContainer>;
 };
 
 const GridContainer = styled.div`
@@ -23,10 +22,6 @@ const GridContainer = styled.div`
   }
 `;
 
-const Grid = ({ children }) => {
-  return <GridContainer>{children}</GridContainer>;
-};
-
-Grid.propTypes = propTypes;
+Grid.propTypes = { children: PropTypes.element.isRequired };
 
 export default Grid;

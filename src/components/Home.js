@@ -1,26 +1,21 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-
-const propTypes = {
-  userLocated: PropTypes.bool.isRequired,
-};
+import { Navigate } from 'react-router-dom';
 
 const Home = ({ userLocated }) => {
   return userLocated ? (
-    <Redirect to="/restaurants" />
+    <Navigate to="/restaurants" />
   ) : (
-    <Redirect to="/location" />
+    <Navigate to="/location" />
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     userLocated: !!state.location.userLocation.id,
   };
 };
 
-Home.propTypes = propTypes;
+Home.propTypes = { userLocated: PropTypes.bool.isRequired };
 
 export default connect(mapStateToProps)(Home);

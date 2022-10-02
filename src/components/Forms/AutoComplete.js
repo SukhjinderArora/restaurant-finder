@@ -1,13 +1,46 @@
 /* eslint-disable react/jsx-curly-newline */
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const propTypes = {
-  list: PropTypes.arrayOf(PropTypes.object).isRequired,
-  type: PropTypes.string.isRequired,
-  onListItemClick: PropTypes.func.isRequired,
-  onListItemKeyDown: PropTypes.func.isRequired,
+const AutoComplete = ({ list, type, onListItemClick, onListItemKeyDown }) => {
+  let listItems;
+  if (type === 'cities') {
+    listItems = list.map((listItem) => (
+      <ListItem
+        role="option"
+        tabIndex="0"
+        key={listItem.id}
+        onClick={() => onListItemClick(listItem.id, listItem.name)}
+        onKeyDown={(e) => onListItemKeyDown(listItem.id, listItem.name, e)}
+      >
+        {listItem.name}
+      </ListItem>
+    ));
+  } else if (type === 'restaurants') {
+    listItems = list.map((listItem) => (
+      <ListItem
+        role="option"
+        tabIndex="0"
+        key={listItem.restaurant.id}
+        onClick={(e) =>
+          onListItemClick(listItem.restaurant.id, listItem.restaurant.name, e)
+        }
+        onKeyDown={(e) =>
+          onListItemKeyDown(listItem.restaurant.id, listItem.restaurant.name, e)
+        }
+      >
+        <ListItemText>{listItem.restaurant.name}</ListItemText>
+        <ListItemSubText>
+          {listItem.restaurant.location.locality_verbose}
+        </ListItemSubText>
+      </ListItem>
+    ));
+  }
+  return (
+    <List role="listbox" tabIndex="0">
+      {listItems}
+    </List>
+  );
 };
 
 const List = styled.ul`
@@ -61,47 +94,12 @@ const ListItemSubText = styled.p`
   }
 `;
 
-const AutoComplete = ({ list, type, onListItemClick, onListItemKeyDown }) => {
-  let listItems;
-  if (type === 'cities') {
-    listItems = list.map(listItem => (
-      <ListItem
-        role="option"
-        tabIndex="0"
-        key={listItem.id}
-        onClick={() => onListItemClick(listItem.id, listItem.name)}
-        onKeyDown={e => onListItemKeyDown(listItem.id, listItem.name, e)}
-      >
-        {listItem.name}
-      </ListItem>
-    ));
-  } else if (type === 'restaurants') {
-    listItems = list.map(listItem => (
-      <ListItem
-        role="option"
-        tabIndex="0"
-        key={listItem.restaurant.id}
-        onClick={e =>
-          onListItemClick(listItem.restaurant.id, listItem.restaurant.name, e)
-        }
-        onKeyDown={e =>
-          onListItemKeyDown(listItem.restaurant.id, listItem.restaurant.name, e)
-        }
-      >
-        <ListItemText>{listItem.restaurant.name}</ListItemText>
-        <ListItemSubText>
-          {listItem.restaurant.location.locality_verbose}
-        </ListItemSubText>
-      </ListItem>
-    ));
-  }
-  return (
-    <List role="listbox" tabIndex="0">
-      {listItems}
-    </List>
-  );
+AutoComplete.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  list: PropTypes.arrayOf(PropTypes.object).isRequired,
+  type: PropTypes.string.isRequired,
+  onListItemClick: PropTypes.func.isRequired,
+  onListItemKeyDown: PropTypes.func.isRequired,
 };
-
-AutoComplete.propTypes = propTypes;
 
 export default AutoComplete;

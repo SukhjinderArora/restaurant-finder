@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 
 import FormContainer from './Forms/FormContainer';
@@ -14,19 +14,6 @@ import {
   clearSearchResults,
 } from '../store/actions/searchActions';
 
-const propTypes = {
-  restaurantsList: PropTypes.arrayOf(PropTypes.object).isRequired,
-  searchRestaurants: PropTypes.func.isRequired,
-  clearResults: PropTypes.func.isRequired,
-  userLocation: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    country_id: PropTypes.number,
-    country_name: PropTypes.string,
-    country_flag_url: PropTypes.string,
-  }).isRequired,
-};
-
 const Search = ({
   restaurantsList,
   searchRestaurants,
@@ -35,7 +22,8 @@ const Search = ({
 }) => {
   const [inputText, setInputText] = useState('');
   const [showAutoComplete, setAutoCompleteVisibility] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const searchRestaurantsDebounced = useCallback(
     debounce(searchRestaurants, 200),
     []
@@ -57,15 +45,15 @@ const Search = ({
     clearResults,
   ]);
 
-  const formSubmitHandler = e => {
+  const formSubmitHandler = (e) => {
     e.preventDefault();
   };
 
-  const inputChangeHandler = e => {
+  const inputChangeHandler = (e) => {
     setInputText(e.target.value);
   };
 
-  const clearInput = e => {
+  const clearInput = (e) => {
     e.preventDefault();
     setInputText('');
     setAutoCompleteVisibility(false);
@@ -76,14 +64,20 @@ const Search = ({
     e.preventDefault();
     setInputText(name);
     setAutoCompleteVisibility(false);
-    history.push(`/restaurant/${name.replace(/\s/gi, '-')}/${id}`, { id });
+    navigate(`/restaurant/${name.replace(/\s/gi, '-')}/${id}`, {
+      state: { id },
+    });
   };
 
   const listItemKeyPressHandler = (id, name, e) => {
     if (e.keyCode === 13) {
       setInputText(name);
       setAutoCompleteVisibility(false);
-      history.push(`/restaurant/${name.replace(/\s/gi, '-')}/${id}`, { id });
+      navigate(`/restaurant/${name.replace(/\s/gi, '-')}/${id}`, {
+        state: {
+          id,
+        },
+      });
     }
   };
 
@@ -110,14 +104,14 @@ const Search = ({
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     restaurantsList: state.search.restaurantsData.restaurants || [],
     userLocation: state.location.userLocation,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     searchRestaurants: (query, cityID) =>
       dispatch(searchForRestaurants(query, cityID)),
@@ -125,6 +119,18 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-Search.propTypes = propTypes;
+Search.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  restaurantsList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  searchRestaurants: PropTypes.func.isRequired,
+  clearResults: PropTypes.func.isRequired,
+  userLocation: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    country_id: PropTypes.number,
+    country_name: PropTypes.string,
+    country_flag_url: PropTypes.string,
+  }).isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

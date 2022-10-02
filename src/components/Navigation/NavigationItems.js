@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
@@ -7,12 +6,33 @@ import { NavLink } from 'react-router-dom';
 import { ReactComponent as SearchIconSVG } from '../../assets/images/svg/search-icon.svg';
 import { ReactComponent as LocationIconSVG } from '../../assets/images/svg/location-icon.svg';
 
-const propTypes = {
-  setSideDrawerOpen: PropTypes.func,
-};
-
-const defaultProps = {
-  setSideDrawerOpen: () => {},
+const NavigationItems = ({ setSideDrawerOpen }) => {
+  const { userLocation } = useSelector((state) => state.location);
+  const userLocated = !!userLocation.id;
+  return (
+    <NavigationList>
+      <NavigationItem onClick={() => setSideDrawerOpen(false)}>
+        <NavigationLink to="/search">
+          <SearchIcon />
+          <LinkText>Search</LinkText>
+        </NavigationLink>
+      </NavigationItem>
+      <NavigationItem onClick={() => setSideDrawerOpen(false)}>
+        <NavigationLink to="/location">
+          <LocationIcon />
+          <LinkText>
+            {userLocated
+              ? `${userLocation.name}, ${userLocation.country_name}`
+              : 'Your Location'}
+          </LinkText>
+          {userLocated && (
+            <LocationFlag src={userLocation.country_flag_url} alt="Flag" />
+          )}
+          {userLocated && <ChangeLocation> (change) </ChangeLocation>}
+        </NavigationLink>
+      </NavigationItem>
+    </NavigationList>
+  );
 };
 
 const NavigationList = styled.ul`
@@ -89,36 +109,11 @@ const ChangeLocation = styled.span`
   }
 `;
 
-const NavigationItems = ({ setSideDrawerOpen }) => {
-  const { userLocation } = useSelector(state => state.location);
-  const userLocated = !!userLocation.id;
-  return (
-    <NavigationList>
-      <NavigationItem onClick={() => setSideDrawerOpen(false)}>
-        <NavigationLink to="/search">
-          <SearchIcon />
-          <LinkText>Search</LinkText>
-        </NavigationLink>
-      </NavigationItem>
-      <NavigationItem onClick={() => setSideDrawerOpen(false)}>
-        <NavigationLink to="/location" exact>
-          <LocationIcon />
-          <LinkText>
-            {userLocated
-              ? `${userLocation.name}, ${userLocation.country_name}`
-              : 'Your Location'}
-          </LinkText>
-          {userLocated && (
-            <LocationFlag src={userLocation.country_flag_url} alt="Flag" />
-          )}
-          {userLocated && <ChangeLocation> (change) </ChangeLocation>}
-        </NavigationLink>
-      </NavigationItem>
-    </NavigationList>
-  );
+NavigationItems.propTypes = {
+  setSideDrawerOpen: PropTypes.func,
 };
-
-NavigationItems.propTypes = propTypes;
-NavigationItems.defaultProps = defaultProps;
+NavigationItems.defaultProps = {
+  setSideDrawerOpen: () => {},
+};
 
 export default NavigationItems;

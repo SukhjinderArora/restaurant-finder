@@ -1,15 +1,30 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { ReactComponent as CheckBoxIconSVG } from '../../assets/images/svg/check.svg';
 
-const propTypes = {
-  id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  selected: PropTypes.bool.isRequired,
-  checkBoxChangeHandler: PropTypes.func.isRequired,
+const CustomCheckBox = ({
+  id,
+  name,
+  value,
+  selected,
+  checkBoxChangeHandler,
+}) => {
+  return (
+    <Label>
+      <Input
+        type="checkbox"
+        id={id}
+        name={name}
+        value={id}
+        checked={selected}
+        onChange={(e) => checkBoxChangeHandler(id, value, e)}
+      />
+      <CheckBox />
+      <CheckBoxIcon />
+      <LabelText>{value}</LabelText>
+    </Label>
+  );
 };
 
 const Label = styled.label`
@@ -61,30 +76,12 @@ const CheckBoxIcon = styled(CheckBoxIconSVG)`
   }
 `;
 
-const CustomCheckBox = ({
-  id,
-  name,
-  value,
-  selected,
-  checkBoxChangeHandler,
-}) => {
-  return (
-    <Label>
-      <Input
-        type="checkbox"
-        id={id}
-        name={name}
-        value={id}
-        checked={selected}
-        onChange={e => checkBoxChangeHandler(id, value, e)}
-      />
-      <CheckBox />
-      <CheckBoxIcon />
-      <LabelText>{value}</LabelText>
-    </Label>
-  );
+CustomCheckBox.propTypes = {
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  selected: PropTypes.bool.isRequired,
+  checkBoxChangeHandler: PropTypes.func.isRequired,
 };
-
-CustomCheckBox.propTypes = propTypes;
 
 export default CustomCheckBox;

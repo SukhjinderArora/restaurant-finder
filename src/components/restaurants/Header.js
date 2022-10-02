@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -7,8 +6,38 @@ import queryString from 'query-string';
 
 import { ReactComponent as FilterIconSVG } from '../../assets/images/svg/filter.svg';
 
-const propTypes = {
-  setSideDrawerOpen: PropTypes.func.isRequired,
+const Header = ({ setSideDrawerOpen }) => {
+  const location = useSelector((state) => state.location.userLocation);
+  const { sortBy } = queryString.parse(useLocation().search);
+  return (
+    <StyledHeader>
+      <Heading>
+        {`Restaurants in ${location.name}, ${location.country_name}`}
+      </Heading>
+      <NavList>
+        <ListItem>
+          <Link
+            to="/restaurants?sortBy=cost&orderBy=asc"
+            className={sortBy === 'cost' ? 'selected' : ''}
+          >
+            Cost
+          </Link>
+        </ListItem>
+        <ListItem>
+          <Link
+            to="/restaurants?sortBy=rating&orderBy=desc"
+            className={sortBy === 'rating' ? 'selected' : ''}
+          >
+            Rating
+          </Link>
+        </ListItem>
+        <ListItem onClick={() => setSideDrawerOpen(true)}>
+          <span>Filters</span>
+          <FilterIcon />
+        </ListItem>
+      </NavList>
+    </StyledHeader>
+  );
 };
 
 const StyledHeader = styled.header`
@@ -76,40 +105,8 @@ const FilterIcon = styled(FilterIconSVG)`
   margin-left: 5px;
 `;
 
-const Header = ({ setSideDrawerOpen }) => {
-  const location = useSelector(state => state.location.userLocation);
-  const { sortBy } = queryString.parse(useLocation().search);
-  return (
-    <StyledHeader>
-      <Heading>
-        {`Restaurants in ${location.name}, ${location.country_name}`}
-      </Heading>
-      <NavList>
-        <ListItem>
-          <Link
-            to="/restaurants?sortBy=cost&orderBy=asc"
-            activeClassName={sortBy === 'cost' ? 'selected' : ''}
-          >
-            Cost
-          </Link>
-        </ListItem>
-        <ListItem>
-          <Link
-            to="/restaurants?sortBy=rating&orderBy=desc"
-            activeClassName={sortBy === 'rating' ? 'selected' : ''}
-          >
-            Rating
-          </Link>
-        </ListItem>
-        <ListItem onClick={() => setSideDrawerOpen(true)}>
-          <span>Filters</span>
-          <FilterIcon />
-        </ListItem>
-      </NavList>
-    </StyledHeader>
-  );
+Header.propTypes = {
+  setSideDrawerOpen: PropTypes.func.isRequired,
 };
-
-Header.propTypes = propTypes;
 
 export default Header;

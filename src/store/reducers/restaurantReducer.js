@@ -18,6 +18,7 @@ const initialState = {
   hasMore: false,
 };
 
+// eslint-disable-next-line default-param-last
 const restaurantReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_RESTAURANTS_START:

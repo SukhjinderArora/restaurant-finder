@@ -1,7 +1,8 @@
-import React, { useEffect, useCallback, useState } from 'react';
+/* eslint-disable react/forbid-prop-types */
+import { useEffect, useCallback, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Redirect, useLocation, useHistory } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import debounce from 'lodash.debounce';
 import queryString from 'query-string';
@@ -15,28 +16,6 @@ import RestaurantList from './RestaurantList';
 
 import * as filtersAction from '../../store/actions/filtersAction';
 import * as restaurantsAction from '../../store/actions/restaurantsAction';
-
-const propTypes = {
-  userLocated: PropTypes.bool.isRequired,
-  locationLoading: PropTypes.bool.isRequired,
-  locationError: PropTypes.bool.isRequired,
-  getCuisines: PropTypes.func.isRequired,
-  getRestaurants: PropTypes.func.isRequired,
-  clearRestaurants: PropTypes.func.isRequired,
-  cityID: PropTypes.number.isRequired,
-  cuisines: PropTypes.arrayOf(PropTypes.object).isRequired,
-  selectedCuisines: PropTypes.string.isRequired,
-  restaurants: PropTypes.arrayOf(PropTypes.object).isRequired,
-  hasMore: PropTypes.bool.isRequired,
-  loading: PropTypes.bool.isRequired,
-};
-
-const Wrapper = styled.div`
-  padding-bottom: 17rem;
-  @media (max-width: 499px) {
-    padding-bottom: 5rem;
-  }
-`;
 
 const Restaurants = ({
   userLocated,
@@ -53,7 +32,7 @@ const Restaurants = ({
   loading,
 }) => {
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { sortBy, orderBy } = queryString.parse(location.search);
   const handleScroll = () => {
     if (
@@ -63,6 +42,7 @@ const Restaurants = ({
       if (hasMore) getRestaurants(cityID, selectedCuisines, sortBy, orderBy);
     }
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleScrollDebounced = useCallback(debounce(handleScroll, 500), [
     hasMore,
     cityID,
@@ -94,18 +74,22 @@ const Restaurants = ({
   }, [getRestaurants, cityID, userLocated, sortBy, orderBy, selectedCuisines]);
 
   const [sideDrawerOpen, setSideDrawer] = useState(false);
-  const sideDrawerHandler = open => {
+  const sideDrawerHandler = (open) => {
     setSideDrawer(open);
   };
 
   const viewRestaurantBtnHandler = (id, name, e) => {
     e.preventDefault();
-    history.push(`/restaurant/${name.replace(/\s/gi, '-')}/${id}`, { id });
+    navigate(`/restaurant/${name.replace(/\s/gi, '-')}/${id}`, {
+      state: {
+        id,
+      },
+    });
   };
 
   if (locationLoading) return <Spinner />;
   if (locationError) return <div>Error getting location</div>;
-  if (!userLocated) return <Redirect to="/location" />;
+  if (!userLocated) return <Navigate to="/location" />;
   return (
     <Wrapper>
       <Header setSideDrawerOpen={sideDrawerHandler} />
@@ -128,7 +112,14 @@ const Restaurants = ({
   );
 };
 
-const mapStateToProps = state => {
+const Wrapper = styled.div`
+  padding-bottom: 17rem;
+  @media (max-width: 499px) {
+    padding-bottom: 5rem;
+  }
+`;
+
+const mapStateToProps = (state) => {
   return {
     locationLoading: state.location.locationLoading,
     locationError: state.location.locationError,
@@ -142,9 +133,9 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getCuisines: cityID => dispatch(filtersAction.getCusines(cityID)),
+    getCuisines: (cityID) => dispatch(filtersAction.getCusines(cityID)),
     getRestaurants: (cityID, cuisines = '', sortBy = '', orderBy = '') =>
       dispatch(
         restaurantsAction.getRestaurants(cityID, cuisines, sortBy, orderBy)
@@ -153,6 +144,19 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-Restaurants.propTypes = propTypes;
+Restaurants.propTypes = {
+  userLocated: PropTypes.bool.isRequired,
+  locationLoading: PropTypes.bool.isRequired,
+  locationError: PropTypes.bool.isRequired,
+  getCuisines: PropTypes.func.isRequired,
+  getRestaurants: PropTypes.func.isRequired,
+  clearRestaurants: PropTypes.func.isRequired,
+  cityID: PropTypes.number.isRequired,
+  cuisines: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selectedCuisines: PropTypes.string.isRequired,
+  restaurants: PropTypes.arrayOf(PropTypes.object).isRequired,
+  hasMore: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Restaurants);
