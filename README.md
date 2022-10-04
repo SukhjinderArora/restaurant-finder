@@ -105,3 +105,7 @@ Follow this guide to deploy the application to Netlify: https://docs.netlify.com
 ## This app uses :
 
 - Zomato API to get the restaurants data.
+
+# License
+
+MIT License
